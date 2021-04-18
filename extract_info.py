@@ -7,7 +7,7 @@ print(today_date)
 kata_penting = ["kuis","ujian","tucil","tubes","praktikum"]
 tambahtask1 = "Tubes IF2211 String Matching pada 14 November 2021"
 tambahtask2 = "Halo bot, tolong ingetin kalau ada kuis IF3110 Bab 2 sampai 3 pada 22/04/2021"
-tambahtask3 = "Halo bot, tolong ingetin kalau ada tugas TL2105 Litosfer pada 22/05/21" # tes format date lain, mungkin gaperlu
+tambahtask3 = "Halo bot, tolong ingetin kalau ada tugas TL2105 Litosfer pada 22/05/21" # tes format date lain, GAUSAH DEH
 lihat1 = "Apa saja deadline yang dimiliki sejauh ini?"
 lihat2 = "Ada deadline apa saja antara 03/04/2021 sampai 15/04/2021?"
 lihat3 = "Deadline 2 minggu ke depan apa saja?"
@@ -24,31 +24,46 @@ error2 = "skdhfakjdfhak hfkj ahklskfa"
 error3 = "halo, apa kabar?"
 error4 = "mari kita coba"
 
-# TODO find_date dengan format dd/mm/yyyy atau dd/mm/yy
-# Format date yang diterima: "13 November 2001", "13/11/2001", "13/11/21"
+# find date dengan format date yang diterima: "13 November 2001", "13/11/2001"
 def find_date(text):
-    #text.lower()
     date_list = []
-    date = re.findall(r"(\d{1,2} (?:januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \d{4})", text.lower()) 
-    date_list.append(date)
+    date1 = re.findall(r"([\d]{1,2}/[\d]{1,2}/[\d]{4})", text.lower())
+    date2 = re.findall(r"(\d{1,2} (?:januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \d{4})",text.lower())
+    if (len(date1) != 0):
+        date_list.append(date1)
+    if (len(date2) != 0):
+        date_list.append(date2)
     return date_list
+print(find_date("aku lahir 13/11/2001 di jakarta, 12 maret 2021 blabla"))
 
-# TODO fungsi buat convert "14 april 2021" ke format "dd/mm/yyyy" terus ke format yang bisa dicompute sama library datetime
-def convert_date(string_date):
-    return "dd/mm/yyyy"
-    
-# Function to convert string to datetime
-def convert(date_time):
-    format = '%b %d %Y %I:%M%p' # The format
-    datetime_str = datetime.datetime.strptime(date_time, format)
-    return datetime_str
-print(convert('Dec 4 2018 10:07AM'))
+def is_date1(string_date):
+    return bool(re.match(r"([\d]{1,2}/[\d]{1,2}/[\d]{4})", string_date))
+print(is_date1('13/11/2001'))
 
-# def convert_stringdate_to_dmy(string_date):
-#     d,m,y = [int(x) for x in string_date.split('/')]
-#     dates = date(y,m,d)
-#     return dates
-# print(convert_stringdate_to_dmy('13/11/2001'))
+def is_date2(string_date):
+    return bool(re.match(r"(\d{1,2} (?:januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \d{4})", string_date))
+print(is_date2('10 april 2021'))
+
+#  fungsi buat convert "14 april 2021" ke format yang bisa dicompute sama library datetime
+def convert_string_to_date(string_date):
+    list_date = string_date.split()
+    d = int(list_date[0])
+    m = list_date[1]
+    y = int(list_date[2])
+    list_of_month = ['januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november','desember']
+    for i in range(len(list_of_month)):
+        if (m == list_of_month[i]):
+            m = int(i+1)
+    dates = datetime.date(y,m,d)
+    return dates
+print(convert_string_to_date("14 april 2021"))
+
+# Fungsi untuk convert dari format "13/11/2001" ke date
+def convert_to_date(string_date):
+    d,m,y = [int(x) for x in string_date.split('/')]
+    dates = datetime.date(y,m,d)
+    return dates
+print(convert_to_date('13/11/2001'))
 
 # TODO bingung nge-extract task_title nya (sebelum 'pada'?)
 # def find_task_title(text):
@@ -58,7 +73,7 @@ print(convert('Dec 4 2018 10:07AM'))
 # def find_task(text):
     # task = re.findall(r"([A-Z][A-Z]\d{4})", text.lower())
 
-# TODO mungkin nanti bakal ada 
+# TODO mungkin nanti bakal return idnya aja? gatau 
 def find_task_id(text):
     task_id = re.findall(r"((?:task) \d{1,2})", text.lower()) 
     return task_id
