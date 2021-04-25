@@ -65,11 +65,11 @@ def convert_to_date(string_date):
     return dates
 print(convert_to_date('13/11/2001'))
 
-# TODO bingung nge-extract task_title nya (sebelum 'pada'?)
+# TODO bingung nge-extract task_title nya (sebelum 'pada'?) // mungkin iya, udah nyoba buat tp gatau bener apa ngga wkwk
 # def find_task_title(text):
 #     task_title = re.findall(r"([A-Z][A-Z]\d{4})", text)
 
-# TODO pake KMP/Boyer Moore. Jenis task: tubes,tucil, dll
+# TODO pake KMP/Boyer Moore. Jenis task: tubes,tucil, dll // harus pake KMP/BM bukan regex?
 # def find_task(text):
     # task = re.findall(r"([A-Z][A-Z]\d{4})", text.lower())
 
