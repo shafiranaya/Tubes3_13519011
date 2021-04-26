@@ -23,10 +23,6 @@ def cleanStopWord(sentence):
     # final_string = ' '.join(cleaned_text)
     return cleaned_text
 
-# menerima masukan berupa pesan dari user
-# mengembalikan jenis fitur
-#def detectFitur(message):
-
 def isFitur1(message):
     # harus punya : tanggal, kode matkul, jenis tugas, topik tugas
     dateList = find_date(message)
@@ -49,23 +45,24 @@ def isFitur1(message):
 def isFitur2(message):
     yes = False
     # cari kata deadline / apa saja / apa aja
-    if "kapan" not in message and ("deadline" in message or "apa saja" in message or "apa aja" in message) :
+    if "kapan" not in message and ("deadline" in message or "dedlen" in message) :
         yes = True
 
     # cari jenis tugas
     taskList = detectTugas(cleanStopWord(message))
-    print(taskList)
-
+    
     # cari tanggal
     dateList = find_date(message)
-    print(dateList)
-
+    
     # cari durasi
     duration = find_duration(message)
-    print(duration)
-
+    
     # if contains 'deadline'
     if(yes):
+        print(taskList)
+        print(dateList)
+        print(duration)
+
         # deadline semua task tertentu
         if(len(taskList)!=0 and len(dateList)==0 and len(duration)==0):
             print("menampilkan semua deadline dari")
@@ -122,6 +119,45 @@ def isFitur3(message):
     return yes
     # kode matkul harus huruf kapital baru kebaca
 
+def isFitur4(message):
+    yes = False
+    taskID = find_task_id(message)
+    dateList = find_date(message)
+
+    keywords = re.compile(".*undur.*|.*maju.*|.*ubah.*|.*ganti.*")
+    keyList = list(filter(keywords.match, cleanStopWord(message)))
+
+    # TODO : nanti mesti dicek ke database id nya valid ato engga
+    if(len(keyList)!=0):
+        print("memperbarui tugas menjadi tanggal",dateList[0][0])
+        yes = True
+    return yes
+
+def isFitur5(message):
+    yes = False
+
+    keywords = re.compile(".*umpul.*|.*selesai.*|.*kelar.*|.*done.*|.*beres.*")
+    keyList = list(filter(keywords.match, cleanStopWord(message)))
+
+    taskID = find_task_id(message)
+    # TODO : nanti mesti dicek ke database id nya valid ato engga
+    if(len(keyList)!=0):
+        print("menandai tugas sudah selesai")
+        yes = True
+    return yes
+
+def isFitur6(message):
+    yes = False
+
+    keywords = re.compile(".*help.*|.*command.*|.*cara.*|.*fitur.*|.*assistant.*")
+    keyList = list(filter(keywords.match, cleanStopWord(message)))
+
+    if(len(keyList)!=0):
+        print("menampilkan apa saja yang bot bisa lakukan")
+        print("mendefinisikan list kata penting")
+        yes = True
+    return yes
+
 # input array of words, return array contains keywords
 def detectTugas(message):
     mylist = cleanStopWord(userMessage)
@@ -160,4 +196,11 @@ elif(isFitur2(userMessage)):
     print("fitur 2")
 elif(isFitur3(userMessage)):
     print("fitur 3")
-
+elif(isFitur4(userMessage)):
+    print("fitur 4")
+elif(isFitur5(userMessage)):
+    print("fitur 5")
+elif(isFitur6(userMessage)):
+    print("fitur 6")
+else:
+    print("maaf, pesan tidak bisa dikenali")
