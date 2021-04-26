@@ -30,13 +30,21 @@ file_db = "tugas.db"
 conn = sqlite3.connect(file_db)
 c = conn.cursor()
 
-#c.execute("DROP TABLE tugas")
+#c.execute("DROP TABLE done")
+
+# tabel buat simpan daftar tugas
 c.execute('''CREATE TABLE IF NOT EXISTS tugas
              (id INTEGER PRIMARY KEY AUTOINCREMENT,
              tanggal DATE, 
              matkul TEXT, 
              jenis TEXT,
              topik TEXT)''')
+
+# tabel yang simpan daftar id dari tugas yang sudah selesai
+c.execute('''CREATE TABLE IF NOT EXISTS done
+             (id_done INTEGER,
+             FOREIGN KEY (id_done) REFERENCES tugas (id),
+             UNIQUE (id_done))''')
 
 def cursor():
     return sqlite3.connect(file_db).cursor()
@@ -70,7 +78,8 @@ def isTugasExist(tugas):
 # buat fitur 2 & 3 : menampilkan tugas berdasarkan kondisi tertentu
 def showAllTugas():
     c = cursor()
-    c.execute('SELECT * FROM tugas')
+    c.execute('''SELECT * FROM tugas 
+                WHERE id NOT IN (SELECT id_done FROM done)''')
     return c.fetchall()
     # return dalam bentuk array of tuple spt ini 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
@@ -81,7 +90,8 @@ def showTugasFrom(date1, date2):
     c.execute('''SELECT *
                  FROM tugas
                  WHERE tanggal >= date(?)
-                 AND tanggal <=  date(?)''',(date1,date2))
+                 AND tanggal <=  date(?)
+                 AND id NOT IN (SELECT id_done FROM done)''',(date1,date2))
     return c.fetchall()
     # return dalam bentuk array of tuple spt ini 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
@@ -91,7 +101,8 @@ def showTugasDate(date):
     c = cursor()
     c.execute('''SELECT *
                  FROM tugas
-                 WHERE tanggal = date(?)''',(date,))
+                 WHERE tanggal = date(?)
+                 AND id NOT IN (SELECT id_done FROM done)''',(date,))
     return c.fetchall()
     # return dalam bentuk array of tuple spt ini 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
@@ -100,7 +111,8 @@ def showTugasbyJenis(jenis):
     c = cursor()
     c.execute('''SELECT *
                  FROM tugas
-                 WHERE jenis like ?''',(jenis,))
+                 WHERE jenis like ?
+                 AND id NOT IN (SELECT id_done FROM done)''',(jenis,))
     return c.fetchall()
     # return dalam bentuk array of tuple spt ini 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
@@ -109,7 +121,8 @@ def showTugasbyMatkul(matkul):
     c = cursor()
     c.execute('''SELECT *
                  FROM tugas
-                 WHERE matkul like ?''',(matkul,))
+                 WHERE matkul like ?
+                 AND id NOT IN (SELECT id_done FROM done)''',(matkul,))
     return c.fetchall()
     # return dalam bentuk array of tuple spt ini 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
@@ -128,19 +141,41 @@ def isIdExist(id):
     if len(temp)!=0:
         return True
     else:
+        print("id tugas tidak ditemukan")
         return False
 
 def updateTanggal(id, tanggal):
-    if(not isIdExist(id)):
-        print("id tidak exist")
-    else:
+    if isIdExist(id):
+        try:
+            sqliteConnection = sqlite3.connect('tugas.db')
+            cursor = sqliteConnection.cursor()
+
+            cursor.execute("""Update tugas set tanggal = ? where id = ?""", (tanggal,id))
+            sqliteConnection.commit()
+            cursor.close()
+
+        except sqlite3.Error as error:
+            print("gagal untuk melakukan update deadline tugas", error)
+        finally:
+            if sqliteConnection:
+                sqliteConnection.close()
+
+# fitur 5 : tandain suatu task sudah selesai dikerjakan
+def tugasDone(id):
+    try:
         c = cursor()
-        c.execute('''UPDATE tugas
-                    SET tanggal = date(?)
-                    WHERE id = ?''',(tanggal,id,))
-        conn.commit()
-        c.close()
-        print("tugas dengan id",id,"berhasil di-update")
+        with c.connection:
+            c.execute("INSERT INTO done VALUES (?)", (id,))
+        c.connection.close()
+    except sqlite3.Error as error:
+        print("tugas sudah pernah ditandai")
+
+def showAllDoneTask():
+    c = cursor()
+    c.execute('''SELECT * FROM tugas 
+                WHERE id IN (SELECT id_done FROM done)''')
+    return c.fetchall()
+
 
 # driver
 tanggal1 = "2021-04-14"
@@ -162,5 +197,7 @@ print(showAllTugas())
 # print(showTugasbyJenis("tubes"))
 print(showTugasbyMatkul("IF2210"))
 print(isIdExist(3))
-updateTanggal(3,"2078-11-20")
+updateTanggal(10,"2080-11-20")
+tugasDone(1)
 print(showAllTugas())
+print(showAllDoneTask())
