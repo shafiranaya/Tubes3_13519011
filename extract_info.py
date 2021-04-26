@@ -118,3 +118,54 @@ print(find_date(tambahtask1))
 print(find_duration(lihat3))
 print(convert_duration_to_days(find_duration(lihat3)))
 print(find_duration(lihat4))
+
+# def print_matrix(matrix):
+#     for i in range(len(matrix)):
+#         for j in range(len(matrix[0])):
+#             print(matrix[i][j],end=" ")
+#         print()
+
+# COBA
+def levenshtein_distance(string1, string2):
+    # Membuat matrix
+    D = [[0 for i in range(len(string2) + 1)] for j in range(len(string1) + 1)]
+    for i in range(len(string1) + 1):
+        D[i][0] = i
+    for j in range(len(string2) + 1):
+        D[0][j] = j
+    # Menghitung distance lalu diassign ke tiap cell dalam matrix
+    for i in range(1, len(string1) + 1):
+        for j in range(1, len(string2) + 1):
+# If the last characters of both strings are the same, 
+# then the edit distance is equal to the edit distance of the same two strings, up to their second-to-last character.
+# If the last character is different, 
+# then the edit distance is equal to the minimum of the cost of inserting, deleting, or replacing the last character of string a.
+            # Jika last char nya sama
+            if string1[i - 1] == string2[j - 1]:
+                D[i][j] = D[i - 1][j - 1]
+            # Jika last char berbeda
+            else:
+                insertion = D[i][j-1] + 1
+                deletion = D[i-1][j] + 1
+                replacement = D[i-1][j-1] + 1
+                D[i][j] = min(insertion, deletion, replacement)
+    # distance adalah cell pojok kanan bawah
+    return D[len(string1)][len(string2)]
+
+def similarity(string1, string2):
+    similarity = 1 - levenshtein_distance(string1, string2)/ max(len(string1), len(string2))
+    return similarity
+print(levenshtein_distance("deadline","deadline"))
+# print(similarity("deadline","deadline"))
+
+# TODO masih belom fix
+def word_recommendation(string, array):
+    # TODO array-nya itu berisi semua keywords yang kita punya ?? atau kayak bahasa indonesia gatau
+    # atau bisa juga buat txt yang isinya semua kata-kata yang mungkin gitu, jadinya iterate ke txt tsb bukan ke array
+    recommended_words = []
+    for word in array:
+        if similarity(string, word) > 0.75:
+            recommended_words.append(word)
+    return recommended_words
+
+print(word_recommendation("dedline",["deadline","tugas","shafira","ngasal"]))
