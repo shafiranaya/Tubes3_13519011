@@ -56,7 +56,7 @@ def convert_string_to_date(string_date):
             m = int(i+1)
     dates = datetime.date(y,m,d)
     return dates
-print(convert_string_to_date("14 april 2021"))
+print("hasil convert : ",convert_string_to_date("14 april 2021"))
 
 # Fungsi untuk convert dari format "13/11/2001" ke date
 def convert_to_date(string_date):

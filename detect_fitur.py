@@ -1,4 +1,4 @@
-# mendeteksi fitur dari pesan yang diinput user
+# detect_fitur.py
 import re
 import string
 from extract_info import *
@@ -22,6 +22,10 @@ def cleanStopWord(sentence):
     cleaned_text = [w.lower() for w in words if w not in ignore] #jadiin huruf kecil
     # final_string = ' '.join(cleaned_text)
     return cleaned_text
+
+# TODO : untuk bagian2 kode yang if kata in kalimat mungkin nanti diganti pake KMP/BM
+# karena di spek ditulis tidak dilakukan secara exact matching tp pake KMP/BM
+# untuk menentukan kemiripan kata di perintah.
 
 def isFitur1(message):
     # harus punya : tanggal, kode matkul, jenis tugas, topik tugas
@@ -186,6 +190,10 @@ def detectTopik(userMessage, key):
             part1 = part[0].partition(key) # asumsi
             return part1
 
+def incrementDate(date, daysduration):
+    date += datetime.timedelta(days=daysduration)
+    return date
+
 # buat ngetes
 userMessage = input("Masukan pesan : ")
 # print(cleanStopWord(userMessage))
@@ -204,3 +212,7 @@ elif(isFitur6(userMessage)):
     print("fitur 6")
 else:
     print("maaf, pesan tidak bisa dikenali")
+
+# test increment date
+d1 = convert_string_to_date("14 april 2021")
+print(incrementDate(d1,17))
