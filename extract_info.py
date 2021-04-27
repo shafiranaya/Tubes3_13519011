@@ -74,10 +74,16 @@ print(convert_to_date('13/11/2001'))
     # task = re.findall(r"([A-Z][A-Z]\d{4})", text.lower())
 
 # TODO mungkin nanti bakal return idnya aja? gatau 
+# return task_id nya aja
+# masih bug???
 def find_task_id(text):
     task_id = re.findall(r"((?:task) \d{1,2})", text.lower()) 
-    return task_id
-print(find_task_id(update1))
+    # return task_id
+    id = task_id[0].split()[1]
+    id = list(id)
+    id[0] = int(id[0])
+    return id
+print("ID = ",find_task_id(update1))
 
 def find_course_id(text):
     course_id = re.findall(r"([A-Z][A-Z]\d{4})", text)
@@ -86,10 +92,12 @@ def find_course_id(text):
 print(find_course_id(tambahtask2))
 print(find_course_id(tambahtask3))
 
+# return list of duration
 def find_duration(text):
     duration = re.findall(r"(\d{1,2} (?:minggu|pekan|hari|bulan|hari ini))", text.lower()) 
     return duration
 
+# return integer yaitu durasinya dalam hari
 def convert_duration_to_days(duration_string):
     duration_list = duration_string[0].split()
     if (duration_list[1] == "hari"):

@@ -38,8 +38,11 @@ def isFitur1(message): # untuk sementara udah aman kayaknya
         topik = detectTopik(message, courseList[0])
 
     if(len(dateList)!=0 and len(courseList)!=0 and len(taskList)!=0 and len(topik)!=0):
-        task = tugas(convert_to_date(dateList[0][0]),courseList[0],taskList[0],topik[2].strip())
-        # print(task)
+        if (is_date2(dateList[0][0])): # tanggal berupa string contohnya "21 april 2021"
+            task = tugas(convert_string_to_date(dateList[0][0]),courseList[0],taskList[0],topik[2].strip())
+        else: # tanggal berupa "21/04/2021"
+            task = tugas(convert_to_date(dateList[0][0]),courseList[0],taskList[0],topik[2].strip())
+            # print(task)
         lastid = add_tugas(task)
         if(lastid!=-99):
             data = showTugasbyId(lastid)[0]
@@ -145,6 +148,7 @@ def isFitur3(message):
     return yes
     # kode matkul harus huruf kapital baru kebaca
 
+# TODO
 def isFitur4(message):
     yes = False
     taskID = find_task_id(message)
@@ -308,4 +312,15 @@ def get_bot_response_fitur3():
 def get_bot_response_fitur5():
     return ""
 def get_bot_response_fitur6():
-    return "[FITUR]\n1. Menambahkan task baru\n2. Blablabla\n3. Blablabla\n[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"
+    header = "[FITUR]\n"
+    fitur1 = "1. Menambahkan task baru\n"
+    fitur2 = "2. Melihat daftar task yang harus dikerjakan\n"
+    fitur3 = "3. Menampilkan deadline dari suatu task tertentu\n"
+    fitur4 = "4. Memperbaharui task tertentu\n"
+    fitur5 = "5. Menandai bahwa suatu task sudah selesai dikerjakan\n"
+    fitur6 = "6. Menampilkan opsi help yang difasilitasi oleh assistant\n"
+    fitur7 = "7. Mendefinisikan list kata penting terkait apakah itu merupakan suatu task atau tidak\n"
+    fitur8 = "8. Menampilkan pesan error jika pesan tidak dikenali\n"
+    fitur9 = "9. Memberikan rekomendasi kata apabila ada typo dari user\n"
+    daftar_kata_penting = "[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"
+    return header+fitur1+fitur2+fitur3+fitur4+fitur5+fitur6+fitur7+fitur8+fitur9+daftar_kata_penting
