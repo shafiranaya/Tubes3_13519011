@@ -15,7 +15,7 @@ lihat4 = "Deadline 13 hari ke depan apa saja?"
 lihat5 = "Apa saja deadline hari ini?"
 lihat6 = "5 minggu ke depan ada tubes apa saja?"
 deadline1 = "Deadline tugas IF2211 itu kapan?"
-update1 = "Deadline task 4 diundur menjadi 28/04/2021"
+update1 = "Deadline 4 diundur menjadi 28/04/2021"
 done1 = "Saya sudah selesai mengerjakan task 3"
 
 help1 = "Apa yang bisa assistant lakukan?"
@@ -77,12 +77,14 @@ print(convert_to_date('13/11/2001'))
 # return task_id nya aja
 # masih bug???
 def find_task_id(text):
-    task_id = re.findall(r"((?:task) \d{1,2})", text.lower()) 
+    task_id = re.findall(r"((?:task) \d{1,2})", text.lower())
     # return task_id
-    id = task_id[0].split()[1]
-    id = list(id)
-    id[0] = int(id[0])
-    return id
+    id = -99
+    if(len(task_id)!=0):
+        id = int(re.search(r'\d+', task_id[0]).group())
+    t_id = []
+    t_id.append(id)
+    return t_id
 print("ID = ",find_task_id(update1))
 
 def find_course_id(text):
