@@ -262,7 +262,7 @@ def allDates(string_date):
     return alldates
 
 # BOT RESPONSE: return string
-def get_bot_response(user_message):
+def get_bot_response(userMessage):
     if(isFitur1(userMessage)):
         response = "fitur 1"
     elif(isFitur2(userMessage)):
@@ -276,7 +276,16 @@ def get_bot_response(user_message):
     elif(isFitur6(userMessage)):
         response = get_bot_response_fitur6()
     else: # fitur 8
-        response = "Maaf, pesan tidak bisa dikenali"
+        userMessage.split()
+        list_suggestions = []
+        for word in userMessage:
+             recommended_word = word_recommendation(word,keywords)
+             list_suggestions.append(recommended_word)
+        if (len(list_suggestions)) == 0:
+            response = "Maaf, pesan tidak bisa dikenali"
+        else:
+            response = "Mungkin maksudmu: "
+            # new_user_message = user_message.replace(word, )
     # fitur 9 gimana ya
     return response
 
@@ -307,6 +316,8 @@ def get_bot_response_fitur6():
     daftar_kata_penting = "[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"
     return header+fitur1+fitur2+fitur3+fitur4+fitur5+fitur6+fitur7+fitur8+fitur9+daftar_kata_penting
 
+print("TEST TYPO")
+print(get_bot_response("dedline tugaz IF2211 itu kapan?"))
 # buat ngetes
 print("--------------------------\n")
 userMessage = input("Masukan pesan : ")
@@ -325,3 +336,4 @@ elif(isFitur6(userMessage)):
     print("fitur 6")
 else:
     print("maaf, pesan tidak bisa dikenali")
+

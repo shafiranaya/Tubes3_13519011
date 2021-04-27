@@ -174,13 +174,23 @@ print(levenshtein_distance("deadline","deadline"))
 # (pake word_recommendation(string, array))
 # kalo recommended_words nya empty yaudah gak return apa2
 # kalo gak empty kasih tau kalo typo, kasih kata2nya
+# return satu saja recommended word nya
 def word_recommendation(string, array):
     # TODO array-nya itu berisi semua keywords yang kita punya ?? atau kayak bahasa indonesia gatau
     # atau bisa juga buat txt yang isinya semua kata-kata yang mungkin gitu, jadinya iterate ke txt tsb bukan ke array
     recommended_words = []
     for word in array:
         if similarity(string, word) > 0.75:
-            recommended_words.append(word)
-    return recommended_words
+            recommended_words.append([word,similarity(string,word)])
+    # Karena nanti yang diambil cuma kata yang paling mirip (di kasus khusus misal ada lebih dari satu kata yang mirip)
+    recommended_words = sorted(recommended_words, key=lambda x: x[1], reverse=True)
+    return recommended_words[0][0]
 
-print(word_recommendation("dedline",["deadline","tugas","shafira","ngasal"]))
+# def check_typo(word, keywords):
+#     recommended_words = word_recomendation(word, keywords)
+#     if (len(recommended_words)) == 0:
+#         return False, recommended_words[0]
+#     else:
+#         return True, ""
+
+print(word_recommendation("dedline",["deadline","dedline","tugas","shafira","ngasal"]))
