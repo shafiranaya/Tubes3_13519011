@@ -1,7 +1,9 @@
 # detect_fitur.py
 import re
 import string
+from datetime import date
 from extract_info import *
+from database import *
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 
@@ -9,8 +11,6 @@ from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFacto
 r = re.compile(".*tubes.*|.*tucil.*|.*kuis.*|.*quiz.*|.*ujian.*|.*praktikum.*|.*uts.*|.*uas.*")
 
 # membersihkan stopwords, return dalam bentuk kalimat
-# dibuat return dalam bentuk kalimat karena diasumsikan
-# proses pencocokan string menggunakan kalimat bukan array
 def cleanStopWord(sentence):
     factory = StopWordRemoverFactory()
     ignore = ['lah','eh','ini','itu','loh'] # stop words tambahan 
@@ -27,21 +27,26 @@ def cleanStopWord(sentence):
 # karena di spek ditulis tidak dilakukan secara exact matching tp pake KMP/BM
 # untuk menentukan kemiripan kata di perintah.
 
-def isFitur1(message):
+def isFitur1(message): # untuk sementara udah aman kayaknya
     # harus punya : tanggal, kode matkul, jenis tugas, topik tugas
     dateList = find_date(message)
     courseList = find_course_id(message)
     taskList = detectTugas(cleanStopWord(message))
     topik = []
+
     if(len(courseList)!=0):
         topik = detectTopik(message, courseList[0])
 
     if(len(dateList)!=0 and len(courseList)!=0 and len(taskList)!=0 and len(topik)!=0):
-        # buat ngetes
-        print("tanggal\t\t: ",dateList[0][0])
-        print("kode matkul\t: ",courseList[0])
-        print("tugas\t\t: ",taskList[0])
-        print("topik\t\t: ",topik[2].strip())
+        task = tugas(convert_to_date(dateList[0][0]),courseList[0],taskList[0],topik[2].strip())
+        # print(task)
+        lastid = add_tugas(task)
+        if(lastid!=-99):
+            data = showTugasbyId(lastid)[0]
+            print("[TASK BERHASIL DICATAT]")
+            string = "(ID : {}) {} - {} - {} - {}".format(data[0],data[1],data[2],data[3],data[4]) 
+            # semoga nanti string-nya tinggal di pass ke kolom chat
+            print(string)
         return True
     else:
         return False
@@ -49,14 +54,14 @@ def isFitur1(message):
 def isFitur2(message):
     yes = False
     # cari kata deadline / apa saja / apa aja
-    if "kapan" not in message and ("deadline" in message or "dedlen" in message) :
+    if "kapan" not in message and ("deadline" in message or "dedlen" in message or "semua tugas" in message) :
         yes = True
 
     # cari jenis tugas
     taskList = detectTugas(cleanStopWord(message))
     
     # cari tanggal
-    dateList = find_date(message)
+    dateList = allDates(message)
     
     # cari durasi
     duration = find_duration(message)
@@ -67,38 +72,55 @@ def isFitur2(message):
         print(dateList)
         print(duration)
 
-        # deadline semua task tertentu
+        # deadline semua tugas ...
         if(len(taskList)!=0 and len(dateList)==0 and len(duration)==0):
-            print("menampilkan semua deadline dari")
-            for task in taskList:
-                print(task)
+            print("Menampilkan semua deadline dari",taskList[0])
+            printDeadline(showTugasbyJenis(taskList[0]))
 
-        # tugas tertentu pada tanggal tertentu
+        # tugas ... pada tanggal ... (tanggalnya cuma 1)
         elif(len(taskList)!=0 and len(dateList)==1):
-            print("menampilkan ",taskList[0]," tanggal ",dateList[0][0])
+            print("Menampilkan",taskList[0],"tanggal",dateList[0])
+            tempjenis = showTugasbyJenis(taskList[0])
+            temptanggal = showTugasbyDate(dateList[0])
+            printDeadline(intersection(tempjenis,temptanggal))
         
-        # tugas tertentu pada tanggal .. sampai ..
-        elif(len(taskList)!=0 and len(dateList)!=0 and len(dateList[0])>1 and ("sampai" in message or "antara" in message)):
-            print("menampilkan ",taskList[0]," antara ",dateList[0][0]," sampai ",dateList[0][1])
+        # tugas ... pada tanggal .. sampai .. (tanggalnya ada 2)
+        elif(len(taskList)!=0 and len(dateList)==2  and ("sampai" in message or "antara" in message)):
+            print("Menampilkan",taskList[0],"antara",dateList[0],"sampai",dateList[1])
+            tempjenis = showTugasbyJenis(taskList[0])
+            temptanggal = showTugasFrom(dateList[0],dateList[1])
+            printDeadline(intersection(tempjenis,temptanggal))
 
+        # tugas ... dengan durasi ...
         elif(len(taskList)!=0 and len(duration)!=0):
-            print("menampilkan ",taskList[0]," ",duration[0]," kedepan ")
+            print("Menampilkan",taskList[0],duration[0],"kedepan")
+            dateLast = incrementDate(date.today(),convert_duration_to_days(duration))
 
-        # deadline semua tugas di tanggal tsb
-        elif(len(dateList)!=0 and len(dateList[0])==1):
-            print("menampilkan semua tugas yang deadline-nya tanggal ",dateList[0][0])
+            tempjenis = showTugasbyJenis(taskList[0])
+            temptanggal = showTugasFrom(date.today(),dateLast)
+            printDeadline(intersection(tempjenis,temptanggal))
+
+        # semua tugas tanggal ...
+        elif(len(dateList)==1):
+            print("Menampilkan semua tugas yang deadline-nya tanggal",dateList[0])
+            printDeadline(showTugasbyDate(dateList[0]))
         
         # deadline semua tugas dari tanggal .. sampai ..
-        elif(len(dateList)!=0 and len(dateList[0])>1 and ("sampai" in message or "antara" in message)):
-            print("menampilkan semua tugas dengan deadline dari tanggal ",dateList[0][0]," sampai ",dateList[0][1])
-        
-        # terdapat durasi
+        elif(len(dateList)==2 and ("sampai" in message or "antara" in message)):
+            print("Menampilkan semua tugas dengan deadline dari tanggal",dateList[0],"sampai",dateList[1])
+            printDeadline(showTugasFrom(dateList[0],dateList[1]))
+
+        # terdapat durasi ...
         elif(len(duration)!=0):
-            print("menampilkan tugas dengan deadline ",duration[0]," kedepan ")
-        
+            print("Menampilkan tugas dengan deadline",duration[0],"kedepan ")
+            dateLast = incrementDate(date.today(),convert_duration_to_days(duration))
+            printDeadline(showTugasFrom(date.today(),dateLast))
+
         # cetak semua tugas
         else:
-            print("menampilkan semua deadline tugas yang ada")
+            print("Menampilkan semua deadline yang ada")
+            printDeadline(showAllTugas())
+
     return yes
     # case dari spek udah work semua, belum tau kalo misalkan masih ada bug
 
@@ -168,11 +190,11 @@ def detectTugas(message):
     newlist = list(filter(r.match, mylist)) # Read Note
     return newlist
 
-# input str // diasumsiin topik selalu diantara :
-# 1) kode matkul ... pada
-# 2) kode matkul ... tanggal/tgl (ini kalo "pada" tidak ditemukan)
-# adalagi..?
 def detectTopik(userMessage, key):
+    # input str // diasumsiin topik selalu diantara :
+    # 1) kode matkul ... pada
+    # 2) kode matkul ... tanggal/tgl (ini kalo "pada" tidak ditemukan)
+    # adalagi..?
     if "pada" in userMessage:
         part = userMessage.partition("pada")
         print(part)
@@ -190,13 +212,49 @@ def detectTopik(userMessage, key):
             part1 = part[0].partition(key) # asumsi
             return part1
 
+def rawString(arrtup):
+    title = "[DAFTAR DEADLINE]"
+    data = arrtup
+    for i in range (len(data)):
+        tgs = data[i]
+        title = title + '\n' +("{}. (ID : {}) {} - {} - {} - {}".format(i+1,tgs[0],tgs[1],tgs[2],tgs[3],tgs[4]))
+    return title
+
+def printDeadline(arrtup):
+    print(rawString(arrtup))
+
 def incrementDate(date, daysduration):
     date += datetime.timedelta(days=daysduration)
     return date
 
+def intersection(lst1, lst2):
+    lst3 = [value for value in lst1 if value in lst2]
+    return lst3
+
+def allDates(string_date):
+    rawDate = find_date(string_date)
+    print("rawDate :",rawDate)
+    alldates = []
+    if(len(rawDate)==0):
+        pass
+    elif(len(rawDate)>1):
+        angka = rawDate[0]
+        huruf = rawDate[1]
+        for a in angka:
+            alldates.append(convert_to_date(a))
+        for h in huruf:
+            alldates.append(convert_string_to_date(h))
+    else:
+        # cuma 1 jenis tanggal
+        for i in range (len(rawDate[0])):
+            if(re.search("/",rawDate[0][0])):
+                alldates.append(convert_to_date(rawDate[0][i]))
+            else:
+                alldates.append(convert_string_to_date(rawDate[0][i]))
+    return alldates
+
 # buat ngetes
 userMessage = input("Masukan pesan : ")
-# print(cleanStopWord(userMessage))
 
 if(isFitur1(userMessage)):
     print("fitur 1")
@@ -212,7 +270,3 @@ elif(isFitur6(userMessage)):
     print("fitur 6")
 else:
     print("maaf, pesan tidak bisa dikenali")
-
-# test increment date
-d1 = convert_string_to_date("14 april 2021")
-print(incrementDate(d1,17))
