@@ -152,7 +152,7 @@ def isFitur3(message):
     return yes
     # kode matkul harus huruf kapital baru kebaca
 
-# TODO masih buggyyy
+# TODO
 def isFitur4(message):
     yes = False
     taskID = find_task_id(message)
@@ -205,18 +205,18 @@ def detectTopik(userMessage, key):
     # adalagi..?
     if "pada" in userMessage:
         part = userMessage.partition("pada")
-        print(part)
+        # print(part)
         part1 = part[0].partition(key) # asumsi
         return part1
     else:
         if "tanggal" in userMessage:
             part = userMessage.partition("tanggal")
-            print(part)
+            # print(part)
             part1 = part[0].partition(key) # asumsi
             return part1
         elif "tgl" in userMessage:
             part = userMessage.partition("tgl")
-            print(part)
+            # print(part)
             part1 = part[0].partition(key) # asumsi
             return part1
 

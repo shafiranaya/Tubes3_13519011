@@ -196,6 +196,7 @@ def str_data_tugas(array):
 #     return string
 
 # driver
+print("--------- database.py -------\n")
 tanggal1 = "2021-04-14"
 matkul1 = "IF2210"
 jenis1 = "tubes"
