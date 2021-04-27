@@ -159,10 +159,9 @@ def isFitur4(message):
     taskID = find_task_id(message)
     dateList = allDates(message)
 
-    keywords = re.compile(".*undur.*|.*maju.*|.*ubah.*|.*ganti.*")
-    keyList = list(filter(keywords.match, cleanStopWord(message)))
+    key = find_update_keyword(message)
 
-    if(len(keyList)!=0 and taskID[0]!=-99):
+    if(key!=-1 and taskID[0]!=-99):
         # print("id: ",taskID[0])
         print("memperbarui tugas menjadi tanggal",dateList[0])
 
@@ -181,12 +180,11 @@ def isFitur4(message):
 def isFitur5(message):
     yes = False
 
-    keywords = re.compile(".*umpul.*|.*selesai.*|.*kelar.*|.*done.*|.*beres.*")
-    keyList = list(filter(keywords.match, cleanStopWord(message)))
+    key = find_done_keyword(message)
 
     taskID = find_task_id(message)
     # TODO : nanti mesti dicek ke database id nya valid ato engga
-    if(len(keyList)!=0):
+    if(key!=-1):
         print("menandai tugas sudah selesai")
         if(isIdExist(taskID[0])):
             tugasDone(taskID[0])
@@ -196,10 +194,9 @@ def isFitur5(message):
 def isFitur6(message):
     yes = False
 
-    keywords = re.compile(".*help.*|.*command.*|.*cara.*|.*fitur.*|.*assistant.*")
-    keyList = list(filter(keywords.match, cleanStopWord(message)))
+    key = find_help_keyword(message)
 
-    if(len(keyList)!=0):
+    if(key!=-1):
         print("menampilkan apa saja yang bot bisa lakukan")
         print("mendefinisikan list kata penting")
         yes = True

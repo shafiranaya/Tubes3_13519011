@@ -259,3 +259,5 @@ def word_recommendation(string, array):
 #         return True, ""
 
 print(word_recommendation("dedline",["deadline","dedline","tugas","shafira","ngasal"]))
+
+print("bm : ",find_update_keyword("ya halo diundur ya"))
