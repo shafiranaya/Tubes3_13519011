@@ -208,7 +208,7 @@ topik1 = "engimon"
 tugas1 = tugas(tanggal1,matkul1,jenis1,topik1)
 tugas2 = tugas("2020-10-20",matkul1,jenis1,"asd")
 tugas3 = tugas("2077-10-20",matkul1,jenis1,"masa depan")
-<<<<<<< HEAD
+
 print(str(tugas1))
 add_tugas(tugas1)
 add_tugas(tugas2)
@@ -227,7 +227,6 @@ print(str_data_tugas(semuatugas))
 # for tugas in semuatugas:
 #     stringtugas += "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}\n".format(tanggal=tugas[1], kode=tugas[2], jenis=tugas[3], topik=tugas[4])
 # print(stringtugas)
-=======
 
 # add_tugas(tugas1)
 # add_tugas(tugas2)
@@ -245,4 +244,4 @@ print(showTugasFrom("2019-10-20","2090-10-20"))
 # print(showAllTugas())
 # print(showAllDoneTask())
 # print(showTugasbyId(1)[0][0])
->>>>>>> 8f44c5aee9e99a044310bdebb34e54be18f1b597
+

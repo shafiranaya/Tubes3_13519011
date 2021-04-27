@@ -270,7 +270,6 @@ elif(isFitur6(userMessage)):
     print("fitur 6")
 else:
     print("maaf, pesan tidak bisa dikenali")
-<<<<<<< HEAD
 
 # # test increment date
 # d1 = convert_string_to_date("14 april 2021")
@@ -310,5 +309,3 @@ def get_bot_response_fitur5():
     return ""
 def get_bot_response_fitur6():
     return "[FITUR]\n1. Menambahkan task baru\n2. Blablabla\n3. Blablabla\n[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"
-=======
->>>>>>> 8f44c5aee9e99a044310bdebb34e54be18f1b597
