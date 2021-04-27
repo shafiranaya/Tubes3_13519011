@@ -18,7 +18,8 @@ class tugas():
     # Topik \t: {self.topik}
     #     """
 
-    # TODO gimana akses IDnya?
+    # TODO gimana akses IDnya? 
+    # udah ke-handle di detect_fitur.py yg fungsi rawString(tuple datanya)
     def __str__(self):
         string = "(ID: {id}) {tanggal} - {kode} - {jenis} - {topik}".format(id="id",tanggal=str(self.tanggal), kode=self.matkul, jenis=self.jenis, topik=self.topik)
         return string
@@ -75,7 +76,7 @@ def showAllTugas():
     c.execute('''SELECT * FROM tugas 
                 WHERE id NOT IN (SELECT id_done FROM done)''')
     return c.fetchall()
-    # return dalam bentuk array of tuple spt ini 
+    # return dalam bentuk array of tuple 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
 
 def showTugasFrom(date1, date2):
@@ -87,7 +88,7 @@ def showTugasFrom(date1, date2):
                  AND tanggal <=  date(?)
                  AND id NOT IN (SELECT id_done FROM done)''',(date1,date2))
     return c.fetchall()
-    # return dalam bentuk array of tuple spt ini 
+    # return dalam bentuk array of tuple
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
 
 def showTugasbyDate(date):
@@ -98,7 +99,7 @@ def showTugasbyDate(date):
                  WHERE tanggal = date(?)
                  AND id NOT IN (SELECT id_done FROM done)''',(date,))
     return c.fetchall()
-    # return dalam bentuk array of tuple spt ini 
+    # return dalam bentuk array of tuple 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
 
 def showTugasbyJenis(jenis):
@@ -108,7 +109,7 @@ def showTugasbyJenis(jenis):
                  WHERE jenis like ?
                  AND id NOT IN (SELECT id_done FROM done)''',(jenis,))
     return c.fetchall()
-    # return dalam bentuk array of tuple spt ini 
+    # return dalam bentuk array of tuple 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
 
 def showTugasbyMatkul(matkul):
@@ -118,7 +119,7 @@ def showTugasbyMatkul(matkul):
                  WHERE matkul like ?
                  AND id NOT IN (SELECT id_done FROM done)''',(matkul,))
     return c.fetchall()
-    # return dalam bentuk array of tuple spt ini 
+    # return dalam bentuk array of tuple 
     # [(1, '2021-04-14', 'IF2210', 'tubes', 'engimon')]
 
 def showTugasbyId(id):
@@ -128,8 +129,6 @@ def showTugasbyId(id):
                  WHERE id = ?
                  ''',(id,))
     return c.fetchall()
-
-# nanti kalo misalnya butuh digabungin, pake intersection antar array aja
 
 # fitur 4 : update tugas berdasarkan id
 def isIdExist(id):
@@ -178,7 +177,6 @@ def showAllDoneTask():
                 WHERE id IN (SELECT id_done FROM done)''')
     return c.fetchall()
 
-
 # Data tugas dari array of tuple diformat ke string
 def str_data_tugas(array):
     string = ""
@@ -197,8 +195,6 @@ def str_data_tugas(array):
 #     string = "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}".format(tanggal=str(tuple_tugas.tanggal), kode=tuple_tugas.matkul, jenis=tuple_tugas.jenis, topik=tuple_tugas.topik)
 #     return string
 
-print(showAllTugas)
-
 # driver
 tanggal1 = "2021-04-14"
 matkul1 = "IF2210"
@@ -215,33 +211,33 @@ add_tugas(tugas2)
 add_tugas(tugas3)
 
 print(str_data_tugas(showAllTugas()))
-# print(showTugasFrom("2020-10-20",tanggal1))
-# print(showTugasDate("2020-10-20"))
-# print(showTugasbyJenis("tubes"))
-print(str_data_tugas(showTugasbyMatkul("IF2210")))
-print(isIdExist(3))
-updateTanggal(3,"2078-11-20")
-semuatugas = showAllTugas()
-print(str_data_tugas(semuatugas))
-# stringtugas=""
-# for tugas in semuatugas:
-#     stringtugas += "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}\n".format(tanggal=tugas[1], kode=tugas[2], jenis=tugas[3], topik=tugas[4])
-# print(stringtugas)
-
-# add_tugas(tugas1)
-# add_tugas(tugas2)
-# add_tugas(tugas1)
-# add_tugas(tugas3)
-
-print(showAllTugas())
-print(showTugasFrom("2019-10-20","2090-10-20"))
+# # print(showTugasFrom("2020-10-20",tanggal1))
 # # print(showTugasDate("2020-10-20"))
 # # print(showTugasbyJenis("tubes"))
-# print(showTugasbyMatkul("IF2210"))
+# print(str_data_tugas(showTugasbyMatkul("IF2210")))
 # print(isIdExist(3))
-# updateTanggal(10,"2080-11-20")
-# tugasDone(1)
+# updateTanggal(3,"2078-11-20")
+# semuatugas = showAllTugas()
+# print(str_data_tugas(semuatugas))
+# # stringtugas=""
+# # for tugas in semuatugas:
+# #     stringtugas += "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}\n".format(tanggal=tugas[1], kode=tugas[2], jenis=tugas[3], topik=tugas[4])
+# # print(stringtugas)
+
+# add_tugas(tugas1)
+# # add_tugas(tugas2)
+# # add_tugas(tugas1)
+# # add_tugas(tugas3)
+
 # print(showAllTugas())
-# print(showAllDoneTask())
-# print(showTugasbyId(1)[0][0])
+# print(showTugasFrom("2019-10-20","2090-10-20"))
+# # # print(showTugasDate("2020-10-20"))
+# # # print(showTugasbyJenis("tubes"))
+# # print(showTugasbyMatkul("IF2210"))
+# # print(isIdExist(3))
+# # updateTanggal(10,"2080-11-20")
+# # tugasDone(1)
+# # print(showAllTugas())
+# # print(showAllDoneTask())
+# # print(showTugasbyId(1)[0][0])
 

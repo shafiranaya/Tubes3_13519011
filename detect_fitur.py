@@ -29,7 +29,7 @@ def cleanStopWord(sentence):
 
 def isFitur1(message): # untuk sementara udah aman kayaknya
     # harus punya : tanggal, kode matkul, jenis tugas, topik tugas
-    dateList = find_date(message)
+    dateList = allDates(message)
     courseList = find_course_id(message)
     taskList = detectTugas(cleanStopWord(message))
     topik = []
@@ -38,11 +38,7 @@ def isFitur1(message): # untuk sementara udah aman kayaknya
         topik = detectTopik(message, courseList[0])
 
     if(len(dateList)!=0 and len(courseList)!=0 and len(taskList)!=0 and len(topik)!=0):
-        if (is_date2(dateList[0][0])): # tanggal berupa string contohnya "21 april 2021"
-            task = tugas(convert_string_to_date(dateList[0][0]),courseList[0],taskList[0],topik[2].strip())
-        else: # tanggal berupa "21/04/2021"
-            task = tugas(convert_to_date(dateList[0][0]),courseList[0],taskList[0],topik[2].strip())
-            # print(task)
+        task = tugas(dateList[0],courseList[0],taskList[0],topik[2].strip())
         lastid = add_tugas(task)
         if(lastid!=-99):
             data = showTugasbyId(lastid)[0]
@@ -142,13 +138,21 @@ def isFitur3(message):
         yes = True
         if len(taskList)!=0:
             print("menampilkan deadline dari",taskList[0],courseList[0])
+            tempmatkul = showTugasbyMatkul(courseList[0])
+            temptugas = showTugasbyJenis(taskList[0])
+            temp = intersection(tempmatkul,temptugas)
+            for i in range(len(temp)):
+                print(temp[i][1])
         else:
             print("menampilkan deadline dari tugas",courseList[0])
+            temp = showTugasbyMatkul(courseList[0])
+            for i in range(len(temp)):
+                print(temp[i][1])
         
     return yes
     # kode matkul harus huruf kapital baru kebaca
 
-# TODO
+# TODO masih buggyyy
 def isFitur4(message):
     yes = False
     taskID = find_task_id(message)
@@ -257,28 +261,6 @@ def allDates(string_date):
                 alldates.append(convert_string_to_date(rawDate[0][i]))
     return alldates
 
-# buat ngetes
-userMessage = input("Masukan pesan : ")
-
-if(isFitur1(userMessage)):
-    print("fitur 1")
-elif(isFitur2(userMessage)):
-    print("fitur 2")
-elif(isFitur3(userMessage)):
-    print("fitur 3")
-elif(isFitur4(userMessage)):
-    print("fitur 4")
-elif(isFitur5(userMessage)):
-    print("fitur 5")
-elif(isFitur6(userMessage)):
-    print("fitur 6")
-else:
-    print("maaf, pesan tidak bisa dikenali")
-
-# # test increment date
-# d1 = convert_string_to_date("14 april 2021")
-# print(incrementDate(d1,17))
-
 # BOT RESPONSE: return string
 def get_bot_response(user_message):
     if(isFitur1(userMessage)):
@@ -324,3 +306,22 @@ def get_bot_response_fitur6():
     fitur9 = "9. Memberikan rekomendasi kata apabila ada typo dari user\n"
     daftar_kata_penting = "[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"
     return header+fitur1+fitur2+fitur3+fitur4+fitur5+fitur6+fitur7+fitur8+fitur9+daftar_kata_penting
+
+# buat ngetes
+print("--------------------------\n")
+userMessage = input("Masukan pesan : ")
+
+if(isFitur1(userMessage)):
+    print("fitur 1")
+elif(isFitur2(userMessage)):
+    print("fitur 2")
+elif(isFitur3(userMessage)):
+    print("fitur 3")
+elif(isFitur4(userMessage)):
+    print("fitur 4")
+elif(isFitur5(userMessage)):
+    print("fitur 5")
+elif(isFitur6(userMessage)):
+    print("fitur 6")
+else:
+    print("maaf, pesan tidak bisa dikenali")
