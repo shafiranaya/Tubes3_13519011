@@ -213,6 +213,41 @@ elif(isFitur6(userMessage)):
 else:
     print("maaf, pesan tidak bisa dikenali")
 
-# test increment date
-d1 = convert_string_to_date("14 april 2021")
-print(incrementDate(d1,17))
+# # test increment date
+# d1 = convert_string_to_date("14 april 2021")
+# print(incrementDate(d1,17))
+
+# BOT RESPONSE: return string
+def get_bot_response(user_message):
+    if(isFitur1(userMessage)):
+        response = "fitur 1"
+    elif(isFitur2(userMessage)):
+        response= "fitur 2"
+    elif(isFitur3(userMessage)):
+        response = "fitur 3"
+    elif(isFitur4(userMessage)):
+        response = "fitur 4"
+    elif(isFitur5(userMessage)):
+        response = "fitur 5"
+    elif(isFitur6(userMessage)):
+        response = get_bot_response_fitur6()
+    else: # fitur 8
+        response = "Maaf, pesan tidak bisa dikenali"
+    # fitur 9 gimana ya
+    return response
+
+# TODO string2 buat bot responsenya
+def get_bot_response_fitur1():
+    return "[TASK BERHASIL DICATAT]\n"
+def get_bot_response_fitur2():
+    return "[DAFTAR DEADLINE]\n"
+def get_bot_response_fitur3():
+    return ""
+def get_bot_response_fitur4():
+    return ""
+def get_bot_response_fitur3():
+    return ""
+def get_bot_response_fitur5():
+    return ""
+def get_bot_response_fitur6():
+    return "[FITUR]\n1. Menambahkan task baru\n2. Blablabla\n3. Blablabla\n[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"

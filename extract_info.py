@@ -159,6 +159,13 @@ print(levenshtein_distance("deadline","deadline"))
 # print(similarity("deadline","deadline"))
 
 # TODO masih belom fix
+# BIKIN TXT ISI SEMUA WORDS YANG MUNGKIN selain keywords??
+# Implementasi:
+# Jadi pertama di extract kan terus dapet kata2. 
+# trus untuk kata2 sisanya yg ga ke extract, cek apakah itu typo apa engga. 
+# (pake word_recommendation(string, array))
+# kalo recommended_words nya empty yaudah gak return apa2
+# kalo gak empty kasih tau kalo typo, kasih kata2nya
 def word_recommendation(string, array):
     # TODO array-nya itu berisi semua keywords yang kita punya ?? atau kayak bahasa indonesia gatau
     # atau bisa juga buat txt yang isinya semua kata-kata yang mungkin gitu, jadinya iterate ke txt tsb bukan ke array

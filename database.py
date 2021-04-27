@@ -9,14 +9,19 @@ class tugas():
         self.jenis = jenis
         self.topik = topik
 
-    # pass object to print
+    # # pass object to print
+    # def __str__(self):
+    #     return f"""
+    # Tanggal \t: {self.tanggal}
+    # Matkul \t: {self.matkul}
+    # Jenis \t: {self.jenis}
+    # Topik \t: {self.topik}
+    #     """
+
+    # TODO gimana akses IDnya?
     def __str__(self):
-        return f"""
-    Tanggal \t: {self.tanggal}
-    Matkul \t: {self.matkul}
-    Jenis \t: {self.jenis}
-    Topik \t: {self.topik}
-        """
+        string = "(ID: {id}) {tanggal} - {kode} - {jenis} - {topik}".format(id="id",tanggal=str(self.tanggal), kode=self.matkul, jenis=self.jenis, topik=self.topik)
+        return string
 
     # operator =
     def __eq__(self, other):
@@ -142,6 +147,26 @@ def updateTanggal(id, tanggal):
         c.close()
         print("tugas dengan id",id,"berhasil di-update")
 
+# Data tugas dari array of tuple diformat ke string
+def str_data_tugas(array):
+    string = ""
+    for i in range(len(array)):
+        string += str(i+1)+". (ID: {id}) {tanggal} - {kode} - {jenis} - {topik}\n".format(id=array[i][0],tanggal=array[i][1], kode=array[i][2], jenis=array[i][3], topik=array[i][4])
+    return string
+    # for i in range(len(array)):
+    #     # string += str(i+1)+ ".\t" + str_tuple_tugas(array[i]) + "\n"
+    #     string += str(array[i])
+    # return string
+
+# Dijadiin di classnya aja ya?
+# def str_tuple_tugas(tuple_tugas):
+#     # TODO akses idnya gimana
+#     # string = "(ID: {id}) {tanggal} - {kode} - {jenis} - {topik}".format(id=tuple_tugas[0], tanggal=tuple_tugas[1], kode=tuple_tugas[2], jenis=tuple_tugas[3], topik=tuple_tugas[4])
+#     string = "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}".format(tanggal=str(tuple_tugas.tanggal), kode=tuple_tugas.matkul, jenis=tuple_tugas.jenis, topik=tuple_tugas.topik)
+#     return string
+
+print(showAllTugas)
+
 # driver
 tanggal1 = "2021-04-14"
 matkul1 = "IF2210"
@@ -151,16 +176,21 @@ topik1 = "engimon"
 tugas1 = tugas(tanggal1,matkul1,jenis1,topik1)
 tugas2 = tugas("2020-10-20",matkul1,jenis1,"asd")
 tugas3 = tugas("2077-10-20",matkul1,jenis1,"masa depan")
-
+print(str(tugas1))
 add_tugas(tugas1)
 add_tugas(tugas2)
 add_tugas(tugas3)
 
-print(showAllTugas())
+print(str_data_tugas(showAllTugas()))
 # print(showTugasFrom("2020-10-20",tanggal1))
 # print(showTugasDate("2020-10-20"))
 # print(showTugasbyJenis("tubes"))
-print(showTugasbyMatkul("IF2210"))
+print(str_data_tugas(showTugasbyMatkul("IF2210")))
 print(isIdExist(3))
 updateTanggal(3,"2078-11-20")
-print(showAllTugas())
+semuatugas = showAllTugas()
+print(str_data_tugas(semuatugas))
+# stringtugas=""
+# for tugas in semuatugas:
+#     stringtugas += "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}\n".format(tanggal=tugas[1], kode=tugas[2], jenis=tugas[3], topik=tugas[4])
+# print(stringtugas)
