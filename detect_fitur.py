@@ -10,7 +10,7 @@ from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFacto
 # entar convert ke lowercase semua dulu
 r = re.compile(".*tubes.*|.*tucil.*|.*kuis.*|.*quiz.*|.*ujian.*|.*praktikum.*|.*uts.*|.*uas.*")
 
-# membersihkan stopwords, return dalam bentuk kalimat
+# membersihkan stopwords, return dalam bentuk array
 def cleanStopWord(sentence):
     factory = StopWordRemoverFactory()
     ignore = ['lah','eh','ini','itu','loh'] # stop words tambahan 
@@ -31,7 +31,7 @@ def isFitur1(message): # untuk sementara udah aman kayaknya
     # harus punya : tanggal, kode matkul, jenis tugas, topik tugas
     dateList = allDates(message)
     courseList = find_course_id(message)
-    taskList = detectTugas(cleanStopWord(message))
+    taskList = detectTugas(message)
     topik = []
 
     if(len(courseList)!=0):
@@ -330,7 +330,7 @@ def get_bot_response_fitur6():
     return header+fitur1+fitur2+fitur3+fitur4+fitur5+fitur6+fitur7+fitur8+fitur9+daftar_kata_penting
 
 print("TEST TYPO")
-# print(isFitur1("dedline tugaz IF2211 itu kapan?"))
+print(isFitur1("dedline tugaz IF2211 itu kapan?"))
 # buat ngetes
 print("--------------------------\n")
 userMessage = input("Masukan pesan : ")
