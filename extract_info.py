@@ -15,7 +15,7 @@ lihat4 = "Deadline 13 hari ke depan apa saja?"
 lihat5 = "Apa saja deadline hari ini?"
 lihat6 = "5 minggu ke depan ada tubes apa saja?"
 deadline1 = "Deadline tugas IF2211 itu kapan?"
-update1 = "Deadline task 4 diundur menjadi 28/04/2021"
+update1 = "Deadline 4 diundur menjadi 28/04/2021"
 done1 = "Saya sudah selesai mengerjakan task 3"
 
 help1 = "Apa yang bisa assistant lakukan?"
@@ -77,12 +77,14 @@ print(convert_to_date('13/11/2001'))
 # return task_id nya aja
 # masih bug???
 def find_task_id(text):
-    task_id = re.findall(r"((?:task) \d{1,2})", text.lower()) 
+    task_id = re.findall(r"((?:task) \d{1,2})", text.lower())
     # return task_id
-    id = task_id[0].split()[1]
-    id = list(id)
-    id[0] = int(id[0])
-    return id
+    id = -99
+    if(len(task_id)!=0):
+        id = int(re.search(r'\d+', task_id[0]).group())
+    t_id = []
+    t_id.append(id)
+    return t_id
 print("ID = ",find_task_id(update1))
 
 def find_course_id(text):
@@ -225,13 +227,23 @@ print(levenshtein_distance("deadline","deadline"))
 # (pake word_recommendation(string, array))
 # kalo recommended_words nya empty yaudah gak return apa2
 # kalo gak empty kasih tau kalo typo, kasih kata2nya
+# return satu saja recommended word nya
 def word_recommendation(string, array):
     # TODO array-nya itu berisi semua keywords yang kita punya ?? atau kayak bahasa indonesia gatau
     # atau bisa juga buat txt yang isinya semua kata-kata yang mungkin gitu, jadinya iterate ke txt tsb bukan ke array
     recommended_words = []
     for word in array:
         if similarity(string, word) > 0.75:
-            recommended_words.append(word)
-    return recommended_words
+            recommended_words.append([word,similarity(string,word)])
+    # Karena nanti yang diambil cuma kata yang paling mirip (di kasus khusus misal ada lebih dari satu kata yang mirip)
+    recommended_words = sorted(recommended_words, key=lambda x: x[1], reverse=True)
+    return recommended_words[0][0]
 
-print(word_recommendation("dedline",["deadline","tugas","shafira","ngasal"]))
+# def check_typo(word, keywords):
+#     recommended_words = word_recomendation(word, keywords)
+#     if (len(recommended_words)) == 0:
+#         return False, recommended_words[0]
+#     else:
+#         return True, ""
+
+print(word_recommendation("dedline",["deadline","dedline","tugas","shafira","ngasal"]))

@@ -10,7 +10,7 @@ from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFacto
 # entar convert ke lowercase semua dulu
 r = re.compile(".*tubes.*|.*tucil.*|.*kuis.*|.*quiz.*|.*ujian.*|.*praktikum.*|.*uts.*|.*uas.*")
 
-# membersihkan stopwords, return dalam bentuk kalimat
+# membersihkan stopwords, return dalam bentuk array
 def cleanStopWord(sentence):
     factory = StopWordRemoverFactory()
     ignore = ['lah','eh','ini','itu','loh'] # stop words tambahan 
@@ -31,7 +31,7 @@ def isFitur1(message): # untuk sementara udah aman kayaknya
     # harus punya : tanggal, kode matkul, jenis tugas, topik tugas
     dateList = allDates(message)
     courseList = find_course_id(message)
-    taskList = detectTugas(cleanStopWord(message))
+    taskList = detectTugas(message)
     topik = []
 
     if(len(courseList)!=0):
@@ -52,12 +52,14 @@ def isFitur1(message): # untuk sementara udah aman kayaknya
 
 def isFitur2(message):
     yes = False
+
+    taskId = find_task_id(message)
     # cari kata deadline / apa saja / apa aja
-    if "kapan" not in message and ("deadline" in message or "dedlen" in message or "semua tugas" in message) :
+    if taskId[0]==-99 and "kapan" not in message and ("deadline" in message or "dedlen" in message or "semua tugas" in message) :
         yes = True
 
     # cari jenis tugas
-    taskList = detectTugas(cleanStopWord(message))
+    taskList = detectTugas(message)
     
     # cari tanggal
     dateList = allDates(message)
@@ -131,7 +133,7 @@ def isFitur3(message):
 
     courseList = find_course_id(message)
     print(courseList)
-    taskList = detectTugas(cleanStopWord(message))
+    taskList = detectTugas(message)
     print(taskList)
 
     if("deadline" in message and "kapan" in message and len(courseList)!=0) :
@@ -152,18 +154,27 @@ def isFitur3(message):
     return yes
     # kode matkul harus huruf kapital baru kebaca
 
-# TODO
 def isFitur4(message):
     yes = False
     taskID = find_task_id(message)
-    dateList = find_date(message)
+    dateList = allDates(message)
 
     keywords = re.compile(".*undur.*|.*maju.*|.*ubah.*|.*ganti.*")
     keyList = list(filter(keywords.match, cleanStopWord(message)))
 
-    # TODO : nanti mesti dicek ke database id nya valid ato engga
-    if(len(keyList)!=0):
-        print("memperbarui tugas menjadi tanggal",dateList[0][0])
+    if(len(keyList)!=0 and taskID[0]!=-99):
+        # print("id: ",taskID[0])
+        print("memperbarui tugas menjadi tanggal",dateList[0])
+
+        # jika id valid
+        if(isIdExist(taskID[0])):
+            # lakukan update
+            old = showTugasbyId(taskID[0])[0][1]
+            updateTanggal(taskID[0],dateList[0])
+            new = showTugasbyId(taskID[0])[0][1]
+
+            print("Sukses memperbaharui deadline tugas dengan ID:{}\ndari tanggal {} menjadi {}".format(taskID[0], old, new))
+
         yes = True
     return yes
 
@@ -177,6 +188,8 @@ def isFitur5(message):
     # TODO : nanti mesti dicek ke database id nya valid ato engga
     if(len(keyList)!=0):
         print("menandai tugas sudah selesai")
+        if(isIdExist(taskID[0])):
+            tugasDone(taskID[0])
         yes = True
     return yes
 
@@ -194,7 +207,7 @@ def isFitur6(message):
 
 # input array of words, return array contains keywords
 def detectTugas(message):
-    mylist = cleanStopWord(userMessage)
+    mylist = cleanStopWord(message)
     newlist = list(filter(r.match, mylist)) # Read Note
     return newlist
 
@@ -262,7 +275,7 @@ def allDates(string_date):
     return alldates
 
 # BOT RESPONSE: return string
-def get_bot_response(user_message):
+def get_bot_response(userMessage):
     if(isFitur1(userMessage)):
         response = "fitur 1"
     elif(isFitur2(userMessage)):
@@ -276,7 +289,16 @@ def get_bot_response(user_message):
     elif(isFitur6(userMessage)):
         response = get_bot_response_fitur6()
     else: # fitur 8
-        response = "Maaf, pesan tidak bisa dikenali"
+        response = ""
+        # list_suggestions = []
+        # for word in userMessage:
+        #      recommended_word = word_recommendation(word,keywords)
+        #      list_suggestions.append(recommended_word)
+        # if (len(list_suggestions)) == 0:
+        #     response = "Maaf, pesan tidak bisa dikenali"
+        # else:
+        #     response = "Mungkin maksudmu: "
+            # new_user_message = user_message.replace(word, )
     # fitur 9 gimana ya
     return response
 
@@ -307,6 +329,8 @@ def get_bot_response_fitur6():
     daftar_kata_penting = "[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"
     return header+fitur1+fitur2+fitur3+fitur4+fitur5+fitur6+fitur7+fitur8+fitur9+daftar_kata_penting
 
+print("TEST TYPO")
+# print(isFitur1("dedline tugaz IF2211 itu kapan?"))
 # buat ngetes
 print("--------------------------\n")
 userMessage = input("Masukan pesan : ")
@@ -325,3 +349,4 @@ elif(isFitur6(userMessage)):
     print("fitur 6")
 else:
     print("maaf, pesan tidak bisa dikenali")
+
