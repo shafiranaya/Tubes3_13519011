@@ -128,48 +128,57 @@ def boyer_moore(text, pattern):
     if i > n - 1:
         return -1
     
-    j = i
-    while (i < n):
-        if pattern[j] == text[j]:
+    j = m - 1
+    while (i <= n - 1):
+        if pattern[j] == text[i]:
             if j == 0:
                 return i
             else:
                 i = i - 1
                 j = j - 1
         else:
-            lo = last(ord(text[i]))
+            lo = last[ord(text[i])]
             i = i + m - min(j, i + lo)
             j = m - 1
     return -1
 
-# TODO pake KMP/Boyer Moore
+# cari keyword update dari teks
 def find_update_keyword(text):
     listkata = ['undur', 'ubah', 'maju', 'ganti', 'update']
     idx = -1
     i = 0
-    while (idx == -1 or i != len(listkata)):
+    while (i < len(listkata)):
         idx = boyer_moore(text, listkata[i])
-        i = i + 1
+        if idx != -1:
+            break
+        else:
+            i = i + 1
     return idx
 
-# TODO pake KMP/Boyer Moore
+# cari keyword done dari teks
 def find_done_keyword(text):
     listkata = ['selesai', 'done', 'udah', 'kumpul']
     idx = -1
     i = 0
-    while (idx == -1 or i != len(listkata)):
+    while (i < len(listkata)):
         idx = boyer_moore(text, listkata[i])
-        i = i + 1
+        if idx != -1:
+            break
+        else:
+            i = i + 1
     return idx
 
-# TODO pake KMP/Boyer Moore
+# cari keyword help dari teks
 def find_help_keyword(text):
     listkata = ['help', 'command', 'daftar', 'cara', 'fitur', 'assistant']
     idx = -1
     i = 0
-    while (idx == -1 or i != len(listkata)):
+    while (i < len(listkata)):
         idx = boyer_moore(text, listkata[i])
-        i = i + 1
+        if idx != -1:
+            break
+        else:
+            i = i + 1
     return idx
 
 # TODO gabungin semua method find, masukin ke satu list of keywords. return list_of_keywords
@@ -179,6 +188,9 @@ print(find_date(tambahtask1))
 print(find_duration(lihat3))
 print(convert_duration_to_days(find_duration(lihat3)))
 print(find_duration(lihat4))
+print("Update: " + str(find_update_keyword(update1)))
+print("Done: " + str(find_done_keyword(done1)))
+print("Help: " + str(find_help_keyword(help1)))
 
 # def print_matrix(matrix):
 #     for i in range(len(matrix)):
