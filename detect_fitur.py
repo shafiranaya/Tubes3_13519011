@@ -1,6 +1,6 @@
 # detect_fitur.py
 import re
-import string
+# import string
 from datetime import date
 from extract_info import *
 from database import *
@@ -9,6 +9,9 @@ from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFacto
 
 # entar convert ke lowercase semua dulu
 r = re.compile(".*tubes.*|.*tucil.*|.*kuis.*|.*quiz.*|.*ujian.*|.*praktikum.*|.*uts.*|.*uas.*")
+# data kamus, yaitu semua keywords
+all_keywords = load_text("help_keywords") + load_text("done") + load_text("update_keywords") + load_text("jenis_tugas") + load_text("waktu")
+print(all_keywords)
 
 # membersihkan stopwords, return dalam bentuk array
 def cleanStopWord(sentence):
@@ -17,7 +20,7 @@ def cleanStopWord(sentence):
     stopword = factory.create_stop_word_remover()
 
     # bersihin stop words, tanda baca dan ubah jadi lowercase semua
-    stop = stopword.remove(sentence) 
+    stop = stopword.remove(sentence)
     words = re.sub("[^\w]", " ",  stop).split() #bersihin tanda baca
     cleaned_text = [w.lower() for w in words if w not in ignore] #jadiin huruf kecil
     # final_string = ' '.join(cleaned_text)
@@ -54,8 +57,9 @@ def isFitur2(message):
     yes = False
 
     taskId = find_task_id(message)
-    # cari kata deadline / apa saja / apa aja
-    if taskId[0]==-99 and "kapan" not in message and ("deadline" in message or "dedlen" in message or "semua tugas" in message) :
+    keykpn = boyer_moore(message, "kapan")
+    
+    if taskId[0]==-99 and keykpn == -1 and ("deadline" in message or "dedlen" in message or "semua tugas" in message) :
         yes = True
 
     # cari jenis tugas
@@ -128,6 +132,9 @@ def isFitur2(message):
 def isFitur3(message):
     yes = False
     
+    # if (boyer_moore(message, "kapan") != -1):
+    #     print("masuk fitur 3")
+    key = (boyer_moore(message,"kapan") != -1) and (boyer_moore(message,"deadline") != -1)
     if("kapan" in message):
         print("masuk fitur 3")
 
@@ -136,7 +143,7 @@ def isFitur3(message):
     taskList = detectTugas(message)
     print(taskList)
 
-    if("deadline" in message and "kapan" in message and len(courseList)!=0) :
+    if(key and len(courseList)!=0) :
         yes = True
         if len(taskList)!=0:
             print("menampilkan deadline dari",taskList[0],courseList[0])
@@ -205,7 +212,7 @@ def isFitur6(message):
 # input array of words, return array contains keywords
 def detectTugas(message):
     mylist = cleanStopWord(message)
-    newlist = list(filter(r.match, mylist)) # Read Note
+    newlist = list(filter(r.match, mylist)) 
     return newlist
 
 def detectTopik(userMessage, key):
@@ -219,23 +226,23 @@ def detectTopik(userMessage, key):
         part1 = part[0].partition(key) # asumsi
         return part1
     else:
-        if "tanggal" in userMessage:
+        if ("tanggal" in userMessage) or ("tgl" in userMessage):
             part = userMessage.partition("tanggal")
             # print(part)
             part1 = part[0].partition(key) # asumsi
             return part1
-        elif "tgl" in userMessage:
-            part = userMessage.partition("tgl")
-            # print(part)
-            part1 = part[0].partition(key) # asumsi
-            return part1
+        # elif "tgl" in userMessage:
+        #     part = userMessage.partition("tgl")
+        #     # print(part)
+        #     part1 = part[0].partition(key) # asumsi
+        #     return part1
 
 def rawString(arrtup):
-    title = "[DAFTAR DEADLINE]"
+    title = ""
     data = arrtup
     for i in range (len(data)):
         tgs = data[i]
-        title = title + '\n' +("{}. (ID : {}) {} - {} - {} - {}".format(i+1,tgs[0],tgs[1],tgs[2],tgs[3],tgs[4]))
+        title = ("{}. (ID : {}) {} - {} - {} - {}".format(i+1,tgs[0],tgs[1],tgs[2],tgs[3],tgs[4]))
     return title
 
 def printDeadline(arrtup):
@@ -271,35 +278,38 @@ def allDates(string_date):
                 alldates.append(convert_string_to_date(rawDate[0][i]))
     return alldates
 
-# BOT RESPONSE: return string
+# BOT RESPONSE: return string (NANTI YANG DIPAKE INI AJA)
+# ini kurapihin besok pagi wkwk
 def get_bot_response(userMessage):
     if(isFitur1(userMessage)):
         response = "fitur 1"
+        # TODO panggil fungsi fitur 1
     elif(isFitur2(userMessage)):
-        response= "fitur 2"
+        response = "fitur 2"
+        # TODO panggil fungsi fitur 2
     elif(isFitur3(userMessage)):
         response = "fitur 3"
+        # TODO panggil fungsi fitur 3
+
     elif(isFitur4(userMessage)):
         response = "fitur 4"
+
+        # TODO panggil fungsi fitur 4
+
     elif(isFitur5(userMessage)):
         response = "fitur 5"
+        # TODO panggil fungsi fitur 5
+
     elif(isFitur6(userMessage)):
         response = get_bot_response_fitur6()
     else: # fitur 8
-        response = ""
-        # list_suggestions = []
-        # for word in userMessage:
-        #      recommended_word = word_recommendation(word,keywords)
-        #      list_suggestions.append(recommended_word)
-        # if (len(list_suggestions)) == 0:
-        #     response = "Maaf, pesan tidak bisa dikenali"
-        # else:
-        #     response = "Mungkin maksudmu: "
-            # new_user_message = user_message.replace(word, )
-    # fitur 9 gimana ya
+        # TESTINNg
+        response = "typo / gadikenali"
     return response
 
-# TODO string2 buat bot responsenya
+
+print(get_bot_response("dedline tugaz IF2211 itu kpan?"))
+# TODO string2 buat bot responsenya (atau gausah)
 def get_bot_response_fitur1():
     return "[TASK BERHASIL DICATAT]\n"
 def get_bot_response_fitur2():
@@ -328,6 +338,16 @@ def get_bot_response_fitur6():
 
 print("TEST TYPO")
 # print(isFitur1("dedline tugaz IF2211 itu kapan?"))
+text = "dedline tugaz IF2211 itu kpan?"
+# x = txt.replace("bananas", "apples")
+
+lists = [['dedline', 'deadline'], ['tugaz', 'tugas'], ['if221', ''], ['kpan', 'kapan']]
+def replace_all(text, array):
+    for dic in array:
+        text = text.replace(dic[0],dic[1])
+    return text
+print("TES REPLACE = " + replace_all(text,lists))
+# print(get_bot_response("dedline tugas IF2211 itu kapan?"))
 # buat ngetes
 print("--------------------------\n")
 userMessage = input("Masukan pesan : ")
@@ -345,5 +365,19 @@ elif(isFitur5(userMessage)):
 elif(isFitur6(userMessage)):
     print("fitur 6")
 else:
-    print("maaf, pesan tidak bisa dikenali")
-
+    response = ""
+    list_suggestions = []
+    message = cleanStopWord(userMessage)
+    for word in message:
+        recommended_word = word_recommendation(word,all_keywords+load_text("keywords"))
+        if (recommended_word != ""):
+            list_suggestions.append([word,recommended_word])
+    # ada typo / beneran gabisa dikenali
+    if (len(list_suggestions) == 0):
+        response = "Maaf, pesan tidak bisa dikenali"
+    else:
+        # HARUSNYA UDAH BENER
+        for pair in list_suggestions:
+            new_user_message = replace_all(userMessage,list_suggestions)
+            response = 'Mungkin maksudmu: "' + new_user_message + '"'
+    print(response)

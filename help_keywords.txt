@@ -1,0 +1,6 @@
+command
+cara
+fitur
+assistant
+asisten
+help

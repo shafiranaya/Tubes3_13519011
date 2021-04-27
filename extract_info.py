@@ -24,6 +24,15 @@ error2 = "skdhfakjdfhak hfkj ahklskfa"
 error3 = "halo, apa kabar?"
 error4 = "mari kita coba"
 
+# TODO nanti cek pathnya lagi setelah folder direstructure
+def load_text(file_name):
+    # data_folder = "../test/"
+    # file_to_open = data_folder + file_name
+    file_to_open = file_name + ".txt"
+    f = open(file_to_open, "r")
+    array_of_words = f.read().splitlines()
+    return array_of_words
+load_text("keywords")
 # find date dengan format date yang diterima: "13 November 2001", "13/11/2001"
 def find_date(text):
     date_list = []
@@ -74,8 +83,7 @@ print(convert_to_date('13/11/2001'))
     # task = re.findall(r"([A-Z][A-Z]\d{4})", text.lower())
 
 # TODO mungkin nanti bakal return idnya aja? gatau 
-# return task_id nya aja
-# masih bug???
+# return task_id nya aja, list of integer dan harusnya cuman satu sih.
 def find_task_id(text):
     task_id = re.findall(r"((?:task) \d{1,2})", text.lower())
     # return task_id
@@ -144,7 +152,8 @@ def boyer_moore(text, pattern):
 
 # cari keyword update dari teks
 def find_update_keyword(text):
-    listkata = ['undur', 'ubah', 'maju', 'ganti', 'update']
+    # listkata = ['undur', 'ubah', 'maju', 'ganti', 'update']
+    listkata = load_text("update_keywords")
     idx = -1
     i = 0
     while (i < len(listkata)):
@@ -158,6 +167,7 @@ def find_update_keyword(text):
 # cari keyword done dari teks
 def find_done_keyword(text):
     listkata = ['selesai', 'done', 'udah', 'kumpul']
+    # listkata = load_text("done_keywords")
     idx = -1
     i = 0
     while (i < len(listkata)):
@@ -170,7 +180,7 @@ def find_done_keyword(text):
 
 # cari keyword help dari teks
 def find_help_keyword(text):
-    listkata = ['help', 'command', 'daftar', 'cara', 'fitur', 'assistant']
+    listkata = load_text("help_keywords")
     idx = -1
     i = 0
     while (i < len(listkata)):
@@ -249,7 +259,12 @@ def word_recommendation(string, array):
             recommended_words.append([word,similarity(string,word)])
     # Karena nanti yang diambil cuma kata yang paling mirip (di kasus khusus misal ada lebih dari satu kata yang mirip)
     recommended_words = sorted(recommended_words, key=lambda x: x[1], reverse=True)
-    return recommended_words[0][0]
+    # recommended_words[0][0])
+    if (len(recommended_words) != 0):
+        recommended_word = recommended_words[0][0]
+    else:
+        recommended_word = ""
+    return recommended_word
 
 # def check_typo(word, keywords):
 #     recommended_words = word_recomendation(word, keywords)
@@ -261,3 +276,6 @@ def word_recommendation(string, array):
 print(word_recommendation("dedline",["deadline","dedline","tugas","shafira","ngasal"]))
 
 print("bm : ",find_update_keyword("ya halo diundur ya"))
+# word_recommendation('dedline',['deadline','kelar','done'])
+# rint(word_recommendation('dedline',['deadline','kelar','done']))
+        
