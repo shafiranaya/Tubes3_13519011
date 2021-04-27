@@ -7,8 +7,7 @@ from database import *
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 
-# TODO ganti yang ... in message jadi boyer moore
-# TODO : setiap fungsi isFitur, return yes(boolean),response(string) -- doneee
+# TODO daftar kata penting kita tuh apa aja sih sebenernya
 # entar convert ke lowercase semua dulu
 r = re.compile(".*tubes.*|.*tucil.*|.*kuis.*|.*quiz.*|.*ujian.*|.*praktikum.*|.*uts.*|.*uas.*")
 # data kamus, yaitu semua keywords
@@ -121,7 +120,7 @@ def isFitur2(message):
             string = rawString(showTugasbyDate(dateList[0]))
         
         # deadline semua tugas dari tanggal .. sampai ..
-        elif(len(dateList)==2 and ("sampai" in message or "antara" in message)):
+        elif(len(dateList)==2 and ((boyer_moore(message, "sampai") != -1) or (boyer_moore(message, "antara") != -1))):
             # print("Menampilkan semua tugas dengan deadline dari tanggal",dateList[0],"sampai",dateList[1])
             #printDeadline(showTugasFrom(dateList[0],dateList[1]))
 
@@ -355,72 +354,6 @@ def get_bot_response(userMessage):
                 response = 'Mungkin maksudmu: "' + new_user_message + '"'
     return response
 
-
-# print(get_bot_response("dedline tugaz IF2211 itu kpan?"))
-# TODO string2 buat bot responsenya (atau gausah)
-# def get_bot_response_fitur1():
-#     return "[TASK BERHASIL DICATAT]\n"
-# def get_bot_response_fitur2():
-#     return "[DAFTAR DEADLINE]\n"
-# def get_bot_response_fitur3():
-#     return ""
-# def get_bot_response_fitur4():
-#     return ""
-# def get_bot_response_fitur3():
-#     return ""
-# def get_bot_response_fitur5():
-#     return ""
-# def get_bot_response_fitur6():
-#     header = "[FITUR]\n"
-#     fitur1 = "1. Menambahkan task baru\n"
-#     fitur2 = "2. Melihat daftar task yang harus dikerjakan\n"
-#     fitur3 = "3. Menampilkan deadline dari suatu task tertentu\n"
-#     fitur4 = "4. Memperbaharui task tertentu\n"
-#     fitur5 = "5. Menandai bahwa suatu task sudah selesai dikerjakan\n"
-#     fitur6 = "6. Menampilkan opsi help yang difasilitasi oleh assistant\n"
-#     fitur7 = "7. Mendefinisikan list kata penting terkait apakah itu merupakan suatu task atau tidak\n"
-#     fitur8 = "8. Menampilkan pesan error jika pesan tidak dikenali\n"
-#     fitur9 = "9. Memberikan rekomendasi kata apabila ada typo dari user\n"
-#     daftar_kata_penting = "[DAFTAR KATA PENTING]\n1. Kuis\n2. Ujian\n3. Tucil\n4. Tubes\n5. Praktikum"
-#     return header+fitur1+fitur2+fitur3+fitur4+fitur5+fitur6+fitur7+fitur8+fitur9+daftar_kata_penting
-
-# print("TEST TYPO")
-# # print(isFitur1("dedline tugaz IF2211 itu kapan?"))
-
-# # print(get_bot_response("dedline tugas IF2211 itu kapan?"))
-# # buat ngetes
 # print("--------------------------\n")
 # userMessage = input("Masukan pesan : ")
 # print(get_bot_response(userMessage))
-
-# if(isFitur1(userMessage)[0]):
-#     print("fitur 1")
-# elif(isFitur2(userMessage)[0]):
-#     print("fitur 2")
-# elif(isFitur3(userMessage)[0]):
-#     print("fitur 3")
-# elif(isFitur4(userMessage)[0]):
-#     print("fitur 4")
-# elif(isFitur5(userMessage)[0]):
-#     print("fitur 5")
-# elif(isFitur6(userMessage)):
-#     print("fitur 6")
-# else:
-#     response = ""
-#     list_suggestions = []
-#     message = cleanStopWord(userMessage)
-#     for word in message:
-#         recommended_word = word_recommendation(word,all_keywords+load_text("keywords"))
-#         if (recommended_word != ""):
-#             list_suggestions.append([word,recommended_word])
-#     # ada typo / beneran gabisa dikenali
-#     if (len(list_suggestions) == 0):
-#         response = "Maaf, pesan tidak bisa dikenali"
-#     else:
-#         # HARUSNYA UDAH BENER
-#         for pair in list_suggestions:
-#             new_user_message = replace_all(userMessage,list_suggestions)
-#             response = 'Mungkin maksudmu: "' + new_user_message + '"'
-#     print(response)
-# print("COBA")
-# print("///////////////////\n")

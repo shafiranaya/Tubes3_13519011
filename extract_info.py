@@ -5,18 +5,17 @@ today_date = datetime.date.today()
 print(today_date)
 
 kata_penting = ["kuis","ujian","tucil","tubes","praktikum"]
-tambahtask1 = "Tubes IF2211 String Matching pada 14 November 2021"
-tambahtask2 = "Halo bot, tolong ingetin kalau ada kuis IF3110 Bab 2 sampai 3 pada 22/04/2021"
-tambahtask3 = "Halo bot, tolong ingetin kalau ada tugas TL2105 Litosfer pada 22/05/21" # tes format date lain, GAUSAH DEH
+tambahtask1 = "Tubes IF2211 String Matching pada 14 November 2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
+tambahtask2 = "Halo bot, tolong ingetin kalau ada kuis IF3110 Bab 2 sampai 3 pada 22/04/2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
 lihat1 = "Apa saja deadline yang dimiliki sejauh ini?"
 lihat2 = "Ada deadline apa saja antara 03/04/2021 sampai 15/04/2021?"
-lihat3 = "Deadline 2 minggu ke depan apa saja?"
-lihat4 = "Deadline 13 hari ke depan apa saja?"
-lihat5 = "Apa saja deadline hari ini?"
-lihat6 = "5 minggu ke depan ada tubes apa saja?"
+lihat3 = "Deadline 2 minggu ke depan apa saja?" # TODO FIX
+lihat4 = "Deadline 13 hari ke depan apa saja?" # TODO FIX
+lihat5 = "Apa saja deadline hari ini?" # TODO fix
+lihat6 = "5 minggu ke depan ada tubes apa saja?" # TODO fix
 deadline1 = "Deadline tugas IF2211 itu kapan?"
 update1 = "Deadline 4 diundur menjadi 28/04/2021"
-done1 = "Saya sudah selesai mengerjakan task 3"
+done1 = "Saya sudah selesai mengerjakan task 3" 
 
 help1 = "Apa yang bisa assistant lakukan?"
 error1 = "apakah mayones sebuah instrumen?"
@@ -33,6 +32,7 @@ def load_text(file_name):
     array_of_words = f.read().splitlines()
     return array_of_words
 load_text("keywords")
+
 # find date dengan format date yang diterima: "13 November 2001", "13/11/2001"
 def find_date(text):
     date_list = []
@@ -45,13 +45,13 @@ def find_date(text):
     return date_list
 print(find_date("aku lahir 13/11/2001 di jakarta, 12 maret 2021 blabla"))
 
-def is_date1(string_date):
-    return bool(re.match(r"([\d]{1,2}/[\d]{1,2}/[\d]{4})", string_date))
-print(is_date1('13/11/2001'))
+# def is_date1(string_date):
+#     return bool(re.match(r"([\d]{1,2}/[\d]{1,2}/[\d]{4})", string_date))
+# print(is_date1('13/11/2001'))
 
-def is_date2(string_date):
-    return bool(re.match(r"(\d{1,2} (?:januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \d{4})", string_date))
-print(is_date2('10 april 2021'))
+# def is_date2(string_date):
+#     return bool(re.match(r"(\d{1,2} (?:januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \d{4})", string_date))
+# print(is_date2('10 april 2021'))
 
 #  fungsi buat convert "14 april 2021" ke format yang bisa dicompute sama library datetime
 def convert_string_to_date(string_date):
@@ -74,15 +74,6 @@ def convert_to_date(string_date):
     return dates
 print(convert_to_date('13/11/2001'))
 
-# TODO bingung nge-extract task_title nya (sebelum 'pada'?) // mungkin iya, udah nyoba buat tp gatau bener apa ngga wkwk
-# def find_task_title(text):
-#     task_title = re.findall(r"([A-Z][A-Z]\d{4})", text)
-
-# TODO pake KMP/Boyer Moore. Jenis task: tubes,tucil, dll // harus pake KMP/BM bukan regex?
-# def find_task(text):
-    # task = re.findall(r"([A-Z][A-Z]\d{4})", text.lower())
-
-# TODO mungkin nanti bakal return idnya aja? gatau 
 # return task_id nya aja, list of integer dan harusnya cuman satu sih.
 def find_task_id(text):
     task_id = re.findall(r"((?:task) \d{1,2})", text.lower())
@@ -95,12 +86,10 @@ def find_task_id(text):
     return t_id
 print("ID = ",find_task_id(update1))
 
+# return list of kode matkul
 def find_course_id(text):
     course_id = re.findall(r"([A-Z][A-Z]\d{4})", text)
     return course_id
-
-print(find_course_id(tambahtask2))
-print(find_course_id(tambahtask3))
 
 # return list of duration
 def find_duration(text):
@@ -204,24 +193,15 @@ def find_deadline_keyword(text):
             i = i + 1
     return idx
 
-# TODO gabungin semua method find, masukin ke satu list of keywords. return list_of_keywords
-# def extract_info(user_text):
+# print(find_date(tambahtask1))
+# print(find_duration(lihat3))
+# print(convert_duration_to_days(find_duration(lihat3)))
+# print(find_duration(lihat4))
+# print("Update: " + str(find_update_keyword(update1)))
+# print("Done: " + str(find_done_keyword(done1)))
+# print("Help: " + str(find_help_keyword(help1)))
 
-print(find_date(tambahtask1))
-print(find_duration(lihat3))
-print(convert_duration_to_days(find_duration(lihat3)))
-print(find_duration(lihat4))
-print("Update: " + str(find_update_keyword(update1)))
-print("Done: " + str(find_done_keyword(done1)))
-print("Help: " + str(find_help_keyword(help1)))
-
-# def print_matrix(matrix):
-#     for i in range(len(matrix)):
-#         for j in range(len(matrix[0])):
-#             print(matrix[i][j],end=" ")
-#         print()
-
-# COBA
+# return distance (int)
 def levenshtein_distance(string1, string2):
     # Membuat matrix
     D = [[0 for i in range(len(string2) + 1)] for j in range(len(string1) + 1)]
@@ -255,8 +235,6 @@ print(levenshtein_distance("deadline","deadline"))
 # print(similarity("deadline","deadline"))
 
 def word_recommendation(string, array):
-    # TODO array-nya itu berisi semua keywords yang kita punya ?? atau kayak bahasa indonesia gatau
-    # atau bisa juga buat txt yang isinya semua kata-kata yang mungkin gitu, jadinya iterate ke txt tsb bukan ke array
     recommended_words = []
     for word in array:
         if similarity(string, word) > 0.75:
@@ -269,11 +247,3 @@ def word_recommendation(string, array):
     else:
         recommended_word = ""
     return recommended_word
-
-
-print(word_recommendation("dedline",["deadline","dedline","tugas","shafira","ngasal"]))
-
-print("bm : ",find_update_keyword("ya halo diundur ya"))
-# word_recommendation('dedline',['deadline','kelar','done'])
-# rint(word_recommendation('dedline',['deadline','kelar','done']))
-        

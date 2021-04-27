@@ -9,15 +9,6 @@ class tugas():
         self.jenis = jenis
         self.topik = topik
 
-    # # pass object to print
-    # def __str__(self):
-    #     return f"""
-    # Tanggal \t: {self.tanggal}
-    # Matkul \t: {self.matkul}
-    # Jenis \t: {self.jenis}
-    # Topik \t: {self.topik}
-    #     """
-
     # TODO gimana akses IDnya? 
     # udah ke-handle di detect_fitur.py yg fungsi rawString(tuple datanya)
     def __str__(self):
@@ -188,29 +179,19 @@ def str_data_tugas(array):
     #     string += str(array[i])
     # return string
 
-# Dijadiin di classnya aja ya?
-# def str_tuple_tugas(tuple_tugas):
-#     # TODO akses idnya gimana
-#     # string = "(ID: {id}) {tanggal} - {kode} - {jenis} - {topik}".format(id=tuple_tugas[0], tanggal=tuple_tugas[1], kode=tuple_tugas[2], jenis=tuple_tugas[3], topik=tuple_tugas[4])
-#     string = "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}".format(tanggal=str(tuple_tugas.tanggal), kode=tuple_tugas.matkul, jenis=tuple_tugas.jenis, topik=tuple_tugas.topik)
-#     return string
-
 # driver
 print("--------- database.py -------\n")
 tanggal1 = "2021-04-14"
 matkul1 = "IF2210"
 jenis1 = "tubes"
 topik1 = "engimon"
-
 tugas1 = tugas(tanggal1,matkul1,jenis1,topik1)
 tugas2 = tugas("2020-10-20",matkul1,jenis1,"asd")
 tugas3 = tugas("2077-10-20",matkul1,jenis1,"masa depan")
-
 print(str(tugas1))
 add_tugas(tugas1)
 add_tugas(tugas2)
 add_tugas(tugas3)
-
 print(str_data_tugas(showAllTugas()))
 # # print(showTugasFrom("2020-10-20",tanggal1))
 # # print(showTugasDate("2020-10-20"))
