@@ -136,7 +136,7 @@ def isIdExist(id):
     temp = []
     with c.connection:
         c.execute('''
-        SELECT * FROM tugas WHERE id = ?''', (id,))
+        SELECT * FROM tugas WHERE id = ? AND id NOT IN (SELECT * FROM done)''', (id,))
         temp = c.fetchall()
 
     if len(temp)!=0:

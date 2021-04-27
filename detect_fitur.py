@@ -52,8 +52,10 @@ def isFitur1(message): # untuk sementara udah aman kayaknya
 
 def isFitur2(message):
     yes = False
+
+    taskId = find_task_id(message)
     # cari kata deadline / apa saja / apa aja
-    if "kapan" not in message and ("deadline" in message or "dedlen" in message or "semua tugas" in message) :
+    if taskId[0]==-99 and "kapan" not in message and ("deadline" in message or "dedlen" in message or "semua tugas" in message) :
         yes = True
 
     # cari jenis tugas
@@ -152,18 +154,27 @@ def isFitur3(message):
     return yes
     # kode matkul harus huruf kapital baru kebaca
 
-# TODO
 def isFitur4(message):
     yes = False
     taskID = find_task_id(message)
-    dateList = find_date(message)
+    dateList = allDates(message)
 
     keywords = re.compile(".*undur.*|.*maju.*|.*ubah.*|.*ganti.*")
     keyList = list(filter(keywords.match, cleanStopWord(message)))
 
-    # TODO : nanti mesti dicek ke database id nya valid ato engga
-    if(len(keyList)!=0):
-        print("memperbarui tugas menjadi tanggal",dateList[0][0])
+    if(len(keyList)!=0 and taskID[0]!=-99):
+        # print("id: ",taskID[0])
+        print("memperbarui tugas menjadi tanggal",dateList[0])
+
+        # jika id valid
+        if(isIdExist(taskID[0])):
+            # lakukan update
+            old = showTugasbyId(taskID[0])[0][1]
+            updateTanggal(taskID[0],dateList[0])
+            new = showTugasbyId(taskID[0])[0][1]
+
+            print("Sukses memperbaharui deadline tugas dengan ID:{}\ndari tanggal {} menjadi {}".format(taskID[0], old, new))
+
         yes = True
     return yes
 
@@ -177,6 +188,8 @@ def isFitur5(message):
     # TODO : nanti mesti dicek ke database id nya valid ato engga
     if(len(keyList)!=0):
         print("menandai tugas sudah selesai")
+        if(isIdExist(taskID[0])):
+            tugasDone(taskID[0])
         yes = True
     return yes
 
