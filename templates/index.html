@@ -42,19 +42,29 @@
 
     <!-- User Input (mau pake yg mana terserah)-->
 
-    <div class="container">
-      <div class="input-group">
-        <textarea class="form-control" aria-label="With textarea"></textarea>
+    <!-- <div class="container"> -->
+      <!-- <div class="input-group"> -->
+        <!-- <textarea class="form-control" aria-label="With textarea"></textarea> -->
 
         <!-- <input id="textInput" type="text" name="msg" placeholder="Message" /> -->
-      </div>
+      <!-- </div> -->
 
-    </div>
+    <!-- </div> -->
     
     <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Write your message" aria-label="Write your message" aria-describedby="button-addon2">
+      <input type="text" class="form-control" placeholder="Write your message" aria-label="Write your message" aria-describedby="button-addon2" name="userMessage">
+      <form method="POST">
       <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+      </form>
     </div>
+
+    <h1>{{get_response("asldfkalsjdflksj")}}</h1>
+    <!-- <form method="POST">
+      <input name="text">
+      <input type="submit">
+     </form>
+   -->
+  
 
     <!-- Optional JavaScript; choose one of the two! -->
 

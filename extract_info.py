@@ -166,7 +166,7 @@ def find_update_keyword(text):
 
 # cari keyword done dari teks
 def find_done_keyword(text):
-    listkata = ['selesai', 'done', 'udah', 'kumpul']
+    listkata = load_text("done")
     # listkata = load_text("done_keywords")
     idx = -1
     i = 0
@@ -181,6 +181,19 @@ def find_done_keyword(text):
 # cari keyword help dari teks
 def find_help_keyword(text):
     listkata = load_text("help_keywords")
+    idx = -1
+    i = 0
+    while (i < len(listkata)):
+        idx = boyer_moore(text, listkata[i])
+        if idx != -1:
+            break
+        else:
+            i = i + 1
+    return idx
+
+# cari keyword deadline dari teks
+def find_deadline_keyword(text):
+    listkata = ['deadline', 'dedlen', 'semua tugas']
     idx = -1
     i = 0
     while (i < len(listkata)):
@@ -241,15 +254,6 @@ def similarity(string1, string2):
 print(levenshtein_distance("deadline","deadline"))
 # print(similarity("deadline","deadline"))
 
-# TODO masih belom fix
-# BIKIN TXT ISI SEMUA WORDS YANG MUNGKIN selain keywords??
-# Implementasi:
-# Jadi pertama di extract kan terus dapet kata2. 
-# trus untuk kata2 sisanya yg ga ke extract, cek apakah itu typo apa engga. 
-# (pake word_recommendation(string, array))
-# kalo recommended_words nya empty yaudah gak return apa2
-# kalo gak empty kasih tau kalo typo, kasih kata2nya
-# return satu saja recommended word nya
 def word_recommendation(string, array):
     # TODO array-nya itu berisi semua keywords yang kita punya ?? atau kayak bahasa indonesia gatau
     # atau bisa juga buat txt yang isinya semua kata-kata yang mungkin gitu, jadinya iterate ke txt tsb bukan ke array
@@ -266,12 +270,6 @@ def word_recommendation(string, array):
         recommended_word = ""
     return recommended_word
 
-# def check_typo(word, keywords):
-#     recommended_words = word_recomendation(word, keywords)
-#     if (len(recommended_words)) == 0:
-#         return False, recommended_words[0]
-#     else:
-#         return True, ""
 
 print(word_recommendation("dedline",["deadline","dedline","tugas","shafira","ngasal"]))
 
