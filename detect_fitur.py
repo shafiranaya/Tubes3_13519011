@@ -93,7 +93,7 @@ def isFitur2(message):
             string = rawString(intersection(tempjenis,temptanggal))
         
         # tugas ... pada tanggal .. sampai .. (tanggalnya ada 2)
-        elif(len(taskList)!=0 and len(dateList)==2  and ("sampai" in message or "antara" in message)):
+        elif(len(taskList)!=0 and len(dateList)==2  and ("sampai" in message or "antara" in message)): # TODO
             # print("Menampilkan",taskList[0],"antara",dateList[0],"sampai",dateList[1])
             tempjenis = showTugasbyJenis(taskList[0])
             temptanggal = showTugasFrom(dateList[0],dateList[1])
@@ -150,13 +150,9 @@ def isFitur3(message):
     
 
     key = (boyer_moore(message,"kapan") != -1) and (boyer_moore(message,"deadline") != -1)
-    # if("kapan" in message):
-    #     print("masuk fitur 3")
 
     courseList = find_course_id(message)
-    # print(courseList)
     taskList = detectTugas(message)
-    # print(taskList)
 
     if(key and len(courseList)!=0) :
         yes = True
@@ -352,7 +348,8 @@ def get_bot_response(userMessage):
             for pair in list_suggestions:
                 new_user_message = replace_all(userMessage,list_suggestions)
                 response = 'Mungkin maksudmu: "' + new_user_message + '"'
-    return response
+    mytext = "<br />".join(response.split("\n"))
+    return mytext
 
 # print("--------------------------\n")
 # userMessage = input("Masukan pesan : ")
