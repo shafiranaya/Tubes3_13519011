@@ -69,12 +69,8 @@ def isFitur2(message):
     
     # cari durasi
     duration = find_duration(message)
-    
     # if contains 'deadline'
     if(yes):
-        # print(taskList)
-        # print(dateList)
-        # print(duration)
 
         # deadline semua tugas ...
         if(len(taskList)!=0 and len(dateList)==0 and len(duration)==0):
@@ -134,11 +130,20 @@ def isFitur2(message):
 
             string = rawString(showTugasFrom(date.today(),dateLast))
 
+        # besok
+        elif(boyer_moore(message,"besok")!=-1):
+            string = rawString(showTugasbyDate(incrementDate(date.today(),1)))
+
+        # lusa
+        elif(boyer_moore(message,"lusa")!=-1):
+            string = rawString(showTugasbyDate(incrementDate(date.today(),2)))
+
+        # hari ini
+        elif(boyer_moore(message,"hari ini")!=-1):
+            string = rawString(showTugasbyDate(date.today()))
+
         # cetak semua tugas
         else:
-            # print("Menampilkan semua deadline yang ada")
-            #printDeadline(showAllTugas())
-
             string = rawString(showAllTugas())
 
     return yes, string
@@ -147,7 +152,6 @@ def isFitur2(message):
 def isFitur3(message):
     yes = False
     string = ""
-    
 
     key = (boyer_moore(message,"kapan") != -1) and (boyer_moore(message,"deadline") != -1)
 
@@ -318,7 +322,10 @@ def get_bot_response(userMessage):
         response = "[TASK BERHASIL DICATAT]\n" + isFitur1(userMessage)[1]
 
     elif(isFitur2(userMessage)[0]):
-        response = "[DAFTAR DEADLINE]\n" + isFitur2(userMessage)[1]
+        if(isFitur2(userMessage)[1]!=""):
+            response = "[DAFTAR DEADLINE]\n" + isFitur2(userMessage)[1]
+        else:
+            response = "Tidak terdapat deadline pada waktu tersebut"
 
     elif(isFitur3(userMessage)[0]):
         response = isFitur3(userMessage)[1]

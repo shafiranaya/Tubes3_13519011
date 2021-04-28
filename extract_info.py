@@ -93,7 +93,7 @@ def find_course_id(text):
 
 # return list of duration
 def find_duration(text):
-    duration = re.findall(r"(\d{1,2} (?:minggu|pekan|hari|bulan|hari ini))", text.lower()) 
+    duration = re.findall(r"(\d{1,2} (?:minggu|pekan|hari|bulan))", text.lower()) 
     return duration
 
 # return integer yaitu durasinya dalam hari
@@ -101,8 +101,6 @@ def convert_duration_to_days(duration_string):
     duration_list = duration_string[0].split()
     if (duration_list[1] == "hari"):
         days = int(duration_list[0]) * 1
-    elif (duration_list[1] == "hari ini"):
-        days = 1
     elif (duration_list[1] == "minggu" or duration_list[1] == "pekan"):
         days = int(duration_list[0]) * 7
     else: # bulan
