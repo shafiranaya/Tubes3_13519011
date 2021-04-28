@@ -4,3 +4,4 @@ fitur
 assistant
 asisten
 help
+kata penting

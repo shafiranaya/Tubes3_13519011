@@ -54,14 +54,14 @@ def convert_string_to_date(string_date):
             m = int(i+1)
     dates = datetime.date(y,m,d)
     return dates
-print("hasil convert : ",convert_string_to_date("14 april 2021"))
+# print("hasil convert : ",convert_string_to_date("14 april 2021"))
 
 # Fungsi untuk convert dari format "13/11/2001" ke date
 def convert_to_date(string_date):
     d,m,y = [int(x) for x in string_date.split('/')]
     dates = datetime.date(y,m,d)
     return dates
-print(convert_to_date('13/11/2001'))
+# print(convert_to_date('13/11/2001'))
 
 # return task_id nya aja, list of integer dan harusnya cuman satu sih.
 def find_task_id(text):
@@ -73,11 +73,11 @@ def find_task_id(text):
     t_id = []
     t_id.append(id)
     return t_id
-print("ID = ",find_task_id(update1))
+# print("ID = ",find_task_id(update1))
 
 # return list of kode matkul
 def find_course_id(text):
-    course_id = re.findall(r"([A-Z][A-Z]\d{4})", text)
+    course_id = re.findall(r"([a-zA-Z][a-zA-Z]\d{4})", text)
     return course_id
 
 # return list of duration
@@ -169,7 +169,7 @@ def find_help_keyword(text):
 
 # cari keyword deadline dari teks
 def find_deadline_keyword(text):
-    listkata = ['deadline', 'dedlen', 'semua tugas']
+    listkata = load_text("deadline")
     idx = -1
     i = 0
     while (i < len(listkata)):

@@ -43,7 +43,7 @@ pip3 install sastrawi
    ```
 ## How to Use
 1. Untuk menambahkan task baru, pastikan pesanmu memiliki komponen sebagai berikut:
-   - Tanggal
+   - Tanggal (format: DD/MM/YYYY atau dalam bahasa Indonesia)
    - Kode matkul (format: XXYYYY, X:huruf kapital, Y:angka)
    - Jenis tugas
    - Topik tugas

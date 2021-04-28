@@ -178,7 +178,6 @@ def isFitur3(message):
             string = string + temp[i][1] + " - "+ temp[i][3] + " - "+temp[i][4] + "\n"
     print(string)
     return yes, string
-    # kode matkul harus huruf kapital baru kebaca
 
 def isFitur4(message):
     string = ""
@@ -388,8 +387,8 @@ def pesan_operator():
     <ol style="line-height:80%">
     <li style="line-height:150%">Untuk menambahkan task baru, pastikan pesanmu memiliki komponen sebagai berikut:
     <ul style="line-height:80%">
-    <li>Tanggal</li>
-    <li>Kode matkul (format: XXYYYY, X:huruf kapital, Y:angka)</li>
+    <li>Tanggal (format: DD/MM/YYYY atau dalam bahasa Indonesia) </li>
+    <li>Kode matkul (format: XXYYYY, X:huruf, Y:angka)</li>
     <li>Jenis tugas</li>
     <li>Topik tugas</li>
     </ul>
