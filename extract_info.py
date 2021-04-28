@@ -235,7 +235,7 @@ print(levenshtein_distance("deadline","deadline"))
 def word_recommendation(string, array):
     recommended_words = []
     for word in array:
-        if similarity(string, word) > 0.75:
+        if (0.75 <= similarity(string, word) < 1):
             recommended_words.append([word,similarity(string,word)])
     # Karena nanti yang diambil cuma kata yang paling mirip (di kasus khusus misal ada lebih dari satu kata yang mirip)
     recommended_words = sorted(recommended_words, key=lambda x: x[1], reverse=True)
