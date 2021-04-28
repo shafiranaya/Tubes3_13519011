@@ -19,14 +19,14 @@ Chatbot dibangun dengan memanfaatkan algoritma String Matching yaitu Boyer Moore
 TODO ada yang kurang gak?
 - Python3
 - Flask
-- Sqlite
+- Sqlite3
 - Sastrawi
 
 Requirements di atas dapat diinstall dengan mengetikkan pada terminal:
 ```
 pip3 install python3
 pip3 install flask
-pip3 install sqlite
+pip3 install sqlite3
 pip3 install sastrawi
 ```
 

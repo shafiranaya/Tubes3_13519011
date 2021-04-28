@@ -1,27 +1,27 @@
 import re
 import datetime
 
-today_date = datetime.date.today()
-print(today_date)
+# today_date = datetime.date.today()
+# print(today_date)
 
-kata_penting = ["kuis","ujian","tucil","tubes","praktikum"]
-tambahtask1 = "Tubes IF2211 String Matching pada 14 November 2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
-tambahtask2 = "Halo bot, tolong ingetin kalau ada kuis IF3110 Bab 2 sampai 3 pada 22/04/2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
-lihat1 = "Apa saja deadline yang dimiliki sejauh ini?"
-lihat2 = "Ada deadline apa saja antara 03/04/2021 sampai 15/04/2021?"
-lihat3 = "Deadline 2 minggu ke depan apa saja?" # TODO FIX
-lihat4 = "Deadline 13 hari ke depan apa saja?" # TODO FIX
-lihat5 = "Apa saja deadline hari ini?" # TODO fix
-lihat6 = "5 minggu ke depan ada tubes apa saja?" # TODO fix
-deadline1 = "Deadline tugas IF2211 itu kapan?"
-update1 = "Deadline 4 diundur menjadi 28/04/2021"
-done1 = "Saya sudah selesai mengerjakan task 3" 
+# kata_penting = ["kuis","ujian","tucil","tubes","praktikum"]
+# tambahtask1 = "Tubes IF2211 String Matching pada 14 November 2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
+# tambahtask2 = "Halo bot, tolong ingetin kalau ada kuis IF3110 Bab 2 sampai 3 pada 22/04/2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
+# lihat1 = "Apa saja deadline yang dimiliki sejauh ini?"
+# lihat2 = "Ada deadline apa saja antara 03/04/2021 sampai 15/04/2021?"
+# lihat3 = "Deadline 2 minggu ke depan apa saja?" # TODO FIX
+# lihat4 = "Deadline 13 hari ke depan apa saja?" # TODO FIX
+# lihat5 = "Apa saja deadline hari ini?" # TODO fix
+# lihat6 = "5 minggu ke depan ada tubes apa saja?" # TODO fix
+# deadline1 = "Deadline tugas IF2211 itu kapan?"
+# update1 = "Deadline 4 diundur menjadi 28/04/2021"
+# done1 = "Saya sudah selesai mengerjakan task 3" 
 
-help1 = "Apa yang bisa assistant lakukan?"
-error1 = "apakah mayones sebuah instrumen?"
-error2 = "skdhfakjdfhak hfkj ahklskfa"
-error3 = "halo, apa kabar?"
-error4 = "mari kita coba"
+# help1 = "Apa yang bisa assistant lakukan?"
+# error1 = "apakah mayones sebuah instrumen?"
+# error2 = "skdhfakjdfhak hfkj ahklskfa"
+# error3 = "halo, apa kabar?"
+# error4 = "mari kita coba"
 
 def load_text(file_name):
     file_to_open = file_name + ".txt"
@@ -199,10 +199,6 @@ def levenshtein_distance(string1, string2):
     # Menghitung distance lalu diassign ke tiap cell dalam matrix
     for i in range(1, len(string1) + 1):
         for j in range(1, len(string2) + 1):
-# If the last characters of both strings are the same, 
-# then the edit distance is equal to the edit distance of the same two strings, up to their second-to-last character.
-# If the last character is different, 
-# then the edit distance is equal to the minimum of the cost of inserting, deleting, or replacing the last character of string a.
             # Jika last char nya sama
             if string1[i - 1] == string2[j - 1]:
                 D[i][j] = D[i - 1][j - 1]
@@ -218,8 +214,6 @@ def levenshtein_distance(string1, string2):
 def similarity(string1, string2):
     similarity = 1 - levenshtein_distance(string1, string2)/ max(len(string1), len(string2))
     return similarity
-print(levenshtein_distance("deadline","deadline"))
-# print(similarity("deadline","deadline"))
 
 def word_recommendation(string, array):
     recommended_words = []

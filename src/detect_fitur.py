@@ -186,7 +186,6 @@ def isFitur4(message):
     taskID = find_task_id(message)
     dateList = allDates(message)
     
-
     key = find_update_keyword(message)
 
     if(key!=-1 and taskID[0]!=-99):
@@ -360,7 +359,7 @@ def get_bot_response(userMessage):
 
     else: # fitur 8 & fitur 9
         # typo / pesan tidak dikenali
-        print("masuk ke else!!!!!")
+        # print("masuk ke else!!!!!")
         list_suggestions = []
         message = cleanStopWord(userMessage)
         for word in message:

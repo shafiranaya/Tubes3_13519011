@@ -8,8 +8,6 @@ class tugas():
         self.jenis = jenis
         self.topik = topik
 
-    # TODO gimana akses IDnya? 
-    # udah ke-handle di detect_fitur.py yg fungsi rawString(tuple datanya)
     def __str__(self):
         string = "(ID: {id}) {tanggal} - {kode} - {jenis} - {topik}".format(id="id",tanggal=str(self.tanggal), kode=self.matkul, jenis=self.jenis, topik=self.topik)
         return string
@@ -167,58 +165,17 @@ def showAllDoneTask():
                 WHERE id IN (SELECT id_done FROM done)''')
     return c.fetchall()
 
-# Data tugas dari array of tuple diformat ke string
-def str_data_tugas(array):
-    string = ""
-    for i in range(len(array)):
-        string += str(i+1)+". (ID: {id}) {tanggal} - {kode} - {jenis} - {topik}\n".format(id=array[i][0],tanggal=array[i][1], kode=array[i][2], jenis=array[i][3], topik=array[i][4])
-    return string
-    # for i in range(len(array)):
-    #     # string += str(i+1)+ ".\t" + str_tuple_tugas(array[i]) + "\n"
-    #     string += str(array[i])
-    # return string
-
 # driver
-print("--------- database.py -------\n")
-tanggal1 = "2021-04-14"
-matkul1 = "IF2210"
-jenis1 = "tubes"
-topik1 = "engimon"
-tugas1 = tugas(tanggal1,matkul1,jenis1,topik1)
-tugas2 = tugas("2020-10-20",matkul1,jenis1,"asd")
-tugas3 = tugas("2077-10-20",matkul1,jenis1,"masa depan")
-print(str(tugas1))
-add_tugas(tugas1)
-add_tugas(tugas2)
-add_tugas(tugas3)
-print(str_data_tugas(showAllTugas()))
-# # print(showTugasFrom("2020-10-20",tanggal1))
-# # print(showTugasDate("2020-10-20"))
-# # print(showTugasbyJenis("tubes"))
-# print(str_data_tugas(showTugasbyMatkul("IF2210")))
-# print(isIdExist(3))
-# updateTanggal(3,"2078-11-20")
-# semuatugas = showAllTugas()
-# print(str_data_tugas(semuatugas))
-# # stringtugas=""
-# # for tugas in semuatugas:
-# #     stringtugas += "(ID: (ID)) {tanggal} - {kode} - {jenis} - {topik}\n".format(tanggal=tugas[1], kode=tugas[2], jenis=tugas[3], topik=tugas[4])
-# # print(stringtugas)
-
+# print("--------- database.py -------\n")
+# tanggal1 = "2021-04-14"
+# matkul1 = "IF2210"
+# jenis1 = "tubes"
+# topik1 = "engimon"
+# tugas1 = tugas(tanggal1,matkul1,jenis1,topik1)
+# tugas2 = tugas("2020-10-20",matkul1,jenis1,"asd")
+# tugas3 = tugas("2077-10-20",matkul1,jenis1,"masa depan")
+# print(str(tugas1))
 # add_tugas(tugas1)
-# # add_tugas(tugas2)
-# # add_tugas(tugas1)
-# # add_tugas(tugas3)
-
-# print(showAllTugas())
-# print(showTugasFrom("2019-10-20","2090-10-20"))
-# # # print(showTugasDate("2020-10-20"))
-# # # print(showTugasbyJenis("tubes"))
-# # print(showTugasbyMatkul("IF2210"))
-# # print(isIdExist(3))
-# # updateTanggal(10,"2080-11-20")
-# # tugasDone(1)
-# # print(showAllTugas())
-# # print(showAllDoneTask())
-# # print(showTugasbyId(1)[0][0])
-
+# add_tugas(tugas2)
+# add_tugas(tugas3)
+# print(str_data_tugas(showAllTugas()))
