@@ -57,18 +57,19 @@ def isFitur2(message):
     taskId = find_task_id(message)
     keykpn = boyer_moore(message, "kapan")
     keydeadline = find_deadline_keyword(message)
-    
-    if taskId[0] == -99 and keykpn == -1 and keydeadline != -1:
-        yes = True
 
     # cari jenis tugas
     taskList = detectTugas(message)
-    
+
     # cari tanggal
     dateList = allDates(message)
     
     # cari durasi
     duration = find_duration(message)
+
+    if taskId[0] == -99 and keykpn == -1 and (keydeadline != -1 or len(taskList)!=0 or len(duration)!=0):
+        yes = True
+    
     # if contains 'deadline'
     if(yes):
 
@@ -380,13 +381,14 @@ def get_bot_response(userMessage):
                 response = 'Mungkin maksudmu: "' + new_user_message + '"'
     if response is not None:
         response = "<br />".join(response.split("\n"))
+        response = "&emsp;".join(response.split("\t"))
     else:
         response = pesan_operator()
     return response
 
 def pesan_operator():
     string = '''Maaf, pesanmu ga bisa dikenali nih
-    [TIPS]
+    \t[TIPS]
     <ol style="line-height:80%">
     <li style="line-height:150%">Untuk menambahkan task baru, pastikan pesanmu memiliki komponen sebagai berikut:
     <ul style="line-height:80%">
