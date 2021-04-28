@@ -195,9 +195,10 @@ def isFitur4(message):
             old = copy.deepcopy(showTugasbyId(taskID[0])[0][1])
             updateTanggal(taskID[0],dateList[0])
             new = showTugasbyId(taskID[0])[0][1]
-
-            string = "Sukses memperbaharui deadline tugas dengan ID:{}\ndari tanggal {} menjadi {}".format(taskID[0], old, new)
-        
+            if(old!=new):
+                string = "Sukses memperbaharui deadline tugas dengan ID:{}\ndari tanggal {} menjadi {}".format(taskID[0], old, new)
+            else:
+                string = "Gunakan tanggal yang berbeda"
         else:
             string = "Task ID tidak ditemukan"
 

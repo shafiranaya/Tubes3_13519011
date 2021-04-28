@@ -136,7 +136,8 @@ def isIdExist(id):
 def updateTanggal(id, tanggal):
     if isIdExist(id):
         try:
-            sqliteConnection = sqlite3.connect('tugas.db')
+            file_db = "../test/tugas.db"
+            sqliteConnection = sqlite3.connect(file_db)
             cursor = sqliteConnection.cursor()
 
             cursor.execute("""Update tugas set tanggal = ? where id = ?""", (tanggal,id))
