@@ -20,9 +20,14 @@
   <body>
     <br>
     <h1>Chattitude</h1>
-    <div class="box3 sb13">I'm speech bubble</div>
+    <!-- <div class="box3 sb13">I'm speech bubble</div>
     <div class="box3 sb14">I'm speech bubble</div>
-    <div class="container">Tes container</div>
+    <div class="container sb13">Tes container sb13</div>
+    <div class="container darker sb13">Tes container darker sb13</div>
+    <div class="container sb14">Tes container sb14</div>
+    <div class="container darker sb14">Tes container darker sb14</div>
+     -->
+
     <!-- <div class="container-sm">100% wide until small breakpoint</div>
     <div class="container-md">100% wide until medium breakpoint</div>
     <div class="container-lg">100% wide until large breakpoint</div>
@@ -40,7 +45,7 @@
     </div> -->
     <br>
     <div id="chatbox">
-    <div class="container">
+    <div class="container sb14">
       <p><span style="font-size:30px;">&#129302;</span> Halo! Selamat datang di bot. Cara menggunakannya [TODO taro semacem info command gitu] </p>
     </div>
     <!-- Container User -->
@@ -72,7 +77,7 @@
         let userText = $("#textInput").val();
         
         //let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
-        let userHtml = '<div class="container darker"><p class="userText">' + userText + '</p></div>';
+        let userHtml = '<div class="container darker sb13"><p class="userText">' + userText + '</p></div>';
         $("#textInput").val("");
         $("#chatbox").append(userHtml);
         document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
@@ -80,7 +85,7 @@
         // botHtml = darker
         // var botHtml = '<p class="botText"><span>' + data + '</span></p>';
         //  <img src="/w3images/avatar_g2.jpg" alt="Avatar" style="width:100%;">
-        var botHtml = '<div class="container"><span style="font-size:30px;">&#129302;</span><p class="botText">' + data + '</p></div>';
+        var botHtml = '<div class="container sb14"><span style="font-size:30px;">&#129302;</span><p class="botText">' + data + '</p></div>';
 
         $("#chatbox").append(botHtml);
         document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
