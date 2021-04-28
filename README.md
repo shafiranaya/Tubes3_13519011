@@ -6,7 +6,6 @@
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [How To Use](#how-to-use)
-  - [Screenshots](#screenshots)
   - [Features](#features)
   - [Status](#status)
   - [Contact](#contact)
@@ -49,9 +48,6 @@ pip3 install sastrawi
    Agar pesanmu dapat terdeteksi, pastikan topik tugas berada diantara kode matkul dan tanggal (contoh:[kode matkul] [topik] pada [tanggal])
 2. Kombinasikan keyword 'deadline' dalam pesanmu untuk melihat deadline dari task yang ada
 3. Kombinasikan keyword 'kapan' dan 'deadline' untuk memperoleh tanggal deadline dari task dengan kode matkul tertentu
-   
-## Screenshots
-![alt text](https://i.imgur.com/F4XjGaC.png)
 
 ## Features
 1. Fitur 1 - Menambahkan task baru
@@ -65,7 +61,7 @@ pip3 install sastrawi
 9. Fitur 9 - Memberikan rekomendasi kata apabila terdapat typo (BONUS)
 
 ## Status
-Project is belum selesai
+Project is finished
 
 ## Contact
 Created by: 
