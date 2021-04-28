@@ -6,22 +6,31 @@
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [How To Use](#how-to-use)
+  - [Screenshots](#screenshots)
+  - [Features](#features)
+  - [Status](#status)
   - [Contact](#contact)
 
 ## General Info
-TODO
+Chatbot yang dibangun adalah Deadline Reminder Assistant (asisten pengingat deadline). Chatbot sederhana ini berfungsi untuk membantu mengingat berbagai deadline, tanggal penting, dan task-task tertentu kepada user yang menggunakannya.
+Chatbot dibangun dengan memanfaatkan algoritma String Matching yaitu Boyer Moore dan Regular Expression.
 
-## Screenshots
 ## Requirements
-TODO
-- balbla
-- blabla
-- blabla
+TODO ada yang kurang gak?
+- Python3
+- Flask
+- Sqlite
+- Sastrawi
+
 Requirements di atas dapat diinstall dengan mengetikkan pada terminal:
-```Blablabla```
+```
+pip3 install python3
+pip3 install flask
+pip3 install sqlite
+pip3 install sastrawi
+```
 
 ## Setup
-TODO
 1. Unzip folder
 2. Buka terminal di directory penyimpanan yang sesuai
 3. Masuk ke folder berisi source code dengan mengetikkan di terminal:
@@ -30,24 +39,37 @@ TODO
    ```
 4. Jalankan program dengan mengetikkan di terminal:
    ```
-   python3 main.py
+   python3 app.py
    ```
 ## How to Use
+1. Untuk menambahkan task baru, pastikan pesanmu memiliki komponen sebagai berikut:
+   - Tanggal
+   - Kode matkul (format: XXYYYY, X:huruf kapital, Y:angka)
+   - Jenis tugas
+   - Topik tugas
+   Agar pesanmu dapat terdeteksi, pastikan topik tugas berada diantara kode matkul dan tanggal (contoh:[kode matkul] [topik] pada [tanggal])
+2. Kombinasikan keyword 'deadline' dalam pesanmu untuk melihat deadline dari task yang ada
+3. Kombinasikan keyword 'kapan' dan 'deadline' untuk memperoleh tanggal deadline dari task dengan kode matkul tertentu
+   
+## Screenshots
 TODO
-1. Masukkan nama file dalam format .txt, contoh: `itb.txt`
-2. Masukkan start node
-3. Masukkan goal node
-4. Hasil lintasan terpendek akan ditampilkan melalui output pada terminal.
-5. map.html akan muncul pada folder src.
-6. Buka map.html pada aplikasi Google Chrome untuk melihat visualisasi peta.
 
 ## Features
+1. Fitur 1 - Menambahkan task baru
+2. Fitur 2 - Melihat daftar task yang harus dikerjakan
+3. Fitur 3 - Menampilkan deadline dari suatu task tertentu
+4. Fitur 4 - Memperbaharui task tertentu
+5. Fitur 5 - Menandai bahwa suatu task sudah selesai dikerjakan
+6. Fitur 6 - Menampilkan opsi help yang difasilitasi oleh assistant
+7. Fitur 7 - Mendefinisikan list kata penting terkait apakah itu merupakan suatu task atau tidak
+8. Fitur 8 - Menampilkan pesan error jika pesan tidak dikenali
+9. Fitur 9 - Memberikan rekomendasi kata apabila terdapat typo (BONUS)
+
 ## Status
 Project is belum selesai
-## Inspiration
-Credits
+
 ## Contact
 Created by: 
-- Jesica - 13519011 - K-1
-- Shafira Naya Aprisadianti - 13519040 - K-1
-- Delisha Azza Naadira - 13519133 - K-3
+- Jesica - 13519011 - K-1 - ([@jestsee](https://www.github.com/jestsee))
+- Shafira Naya Aprisadianti - 13519040 - K-1 - ([@shafiranaya](https://www.github.com/shafiranaya))
+- Delisha Azza Naadira - 13519133 - K-3 -  ([@delishaandr](https://www.github.com/delishaandr))
