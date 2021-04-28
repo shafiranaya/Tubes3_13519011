@@ -24,8 +24,7 @@ file_db = "../test/tugas.db"
 conn = sqlite3.connect(file_db)
 c = conn.cursor()
 
-# c.execute("DROP TABLE done")
-# c.execute("DROP TABLE tugas")
+
 
 # tabel buat simpan daftar tugas
 c.execute('''CREATE TABLE IF NOT EXISTS tugas
@@ -180,3 +179,6 @@ def showAllDoneTask():
 # add_tugas(tugas2)
 # add_tugas(tugas3)
 # print(str_data_tugas(showAllTugas()))
+
+# c.execute("DROP TABLE done")
+# c.execute("DROP TABLE tugas")
