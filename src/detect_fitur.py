@@ -329,6 +329,9 @@ def get_bot_response(userMessage):
     b5, r5 = isFitur5(userMessage)
     b6, r6 = isFitur6(userMessage)
 
+    # fitur tambahan ngide hehe
+    demot = find_demot_keyword(userMessage)
+
     if(b1):
         if(r1!=""):
             response = "[TASK BERHASIL DICATAT]\n" + r1
@@ -355,6 +358,9 @@ def get_bot_response(userMessage):
 
     elif(b6):
         response = r6
+    
+    elif(demot != -1):
+        response = "Semangat yaaa pasti bisa kok :D"
 
     else: # fitur 8 & fitur 9
         # typo / pesan tidak dikenali

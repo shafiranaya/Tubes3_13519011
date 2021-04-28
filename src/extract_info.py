@@ -180,6 +180,18 @@ def find_deadline_keyword(text):
             i = i + 1
     return idx
 
+# cari keyword demot dari teks
+def find_demot_keyword(text):
+    listkata = load_text("demot")
+    idx = -1
+    i = 0
+    while (i < len(listkata)):
+        idx = boyer_moore(text, listkata[i])
+        if idx != -1:
+            break
+        else:
+            i = i + 1
+    return idx
 # print(find_date(tambahtask1))
 # print(find_duration(lihat3))
 # print(convert_duration_to_days(find_duration(lihat3)))
