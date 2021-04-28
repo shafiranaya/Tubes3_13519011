@@ -28,7 +28,7 @@ def load_text(file_name):
     # data_folder = "../test/"
     # file_to_open = data_folder + file_name
     file_to_open = file_name + ".txt"
-    f = open("test/" + file_to_open, "r")
+    f = open("../test/" + file_to_open, "r")
     array_of_words = f.read().splitlines()
     return array_of_words
 load_text("keywords")
