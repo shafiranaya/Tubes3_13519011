@@ -1,6 +1,6 @@
 # detect_fitur.py
 import re
-# import string
+import copy
 from datetime import date
 from extract_info import *
 from database import *
@@ -152,6 +152,7 @@ def isFitur2(message):
 def isFitur3(message):
     yes = False
     string = ""
+    temp = []
 
     key = (boyer_moore(message,"kapan") != -1) and (boyer_moore(message,"deadline") != -1)
 
@@ -165,13 +166,17 @@ def isFitur3(message):
             tempmatkul = showTugasbyMatkul(courseList[0])
             temptugas = showTugasbyJenis(taskList[0])
             temp = intersection(tempmatkul,temptugas)
-            for i in range(len(temp)):
-                string = string + temp[i][1] + " - "+ temp[i][3] + " - "+temp[i][4] + "\n"
+
         else:
             # print("menampilkan deadline dari tugas",courseList[0])
             temp = showTugasbyMatkul(courseList[0])
-            for i in range(len(temp)):
-                string = string + temp[i][1] + " - "+ temp[i][3] + " - "+temp[i][4] + "\n"
+
+    if(len(temp)!=0):
+        for i in range(len(temp)):
+            string = string + temp[i][1] + " - "+ temp[i][3] + " - "+temp[i][4] + "\n"
+    else:
+        string = "Maaf, matkul atau jenis tugas tidak ditemukan"
+            
         
     return yes, string
     # kode matkul harus huruf kapital baru kebaca
@@ -181,21 +186,23 @@ def isFitur4(message):
     yes = False
     taskID = find_task_id(message)
     dateList = allDates(message)
+    
 
     key = find_update_keyword(message)
 
     if(key!=-1 and taskID[0]!=-99):
-        # print("id: ",taskID[0])
-        # print("memperbarui tugas menjadi tanggal",dateList[0])
 
         # jika id valid
         if(isIdExist(taskID[0])):
             # lakukan update
-            old = showTugasbyId(taskID[0])[0][1]
+            old = copy.deepcopy(showTugasbyId(taskID[0])[0][1])
             updateTanggal(taskID[0],dateList[0])
             new = showTugasbyId(taskID[0])[0][1]
 
             string = "Sukses memperbaharui deadline tugas dengan ID:{}\ndari tanggal {} menjadi {}".format(taskID[0], old, new)
+        
+        else:
+            string = "Task ID tidak ditemukan"
 
         yes = True
     return yes, string
@@ -211,7 +218,9 @@ def isFitur5(message):
         # print("menandai tugas sudah selesai")
         if(isIdExist(taskID[0])):
             tugasDone(taskID[0])
-            string = "Sukses menandai task {} selesai".format(taskID[0]) 
+            string = "Sukses menandai task {} selesai".format(taskID[0])
+        else:
+            string = "ID task tidak ditemukan"
         yes = True
     return yes, string
 
@@ -318,28 +327,41 @@ def allDates(string_date):
 # BOT RESPONSE: return string (NANTI YANG DIPAKE INI AJA)
 def get_bot_response(userMessage):
     response = ""
-    if(isFitur1(userMessage)[0]):
-        response = "[TASK BERHASIL DICATAT]\n" + isFitur1(userMessage)[1]
 
-    elif(isFitur2(userMessage)[0]):
-        if(isFitur2(userMessage)[1]!=""):
-            response = "[DAFTAR DEADLINE]\n" + isFitur2(userMessage)[1]
+    b1, r1 = isFitur1(userMessage)
+    b2, r2 = isFitur2(userMessage)
+    b3, r3 = isFitur3(userMessage)
+    b4, r4 = isFitur4(userMessage)
+    b5, r5 = isFitur5(userMessage)
+    b6, r6 = isFitur6(userMessage)
+
+    if(b1):
+        if(r1!=""):
+            response = "[TASK BERHASIL DICATAT]\n" + r1
+        else:
+            response = "Tugas sudah tercatat di database"
+
+    elif(b2):
+        if(r2!=""):
+            response = "[DAFTAR DEADLINE]\n" + r2
         else:
             response = "Tidak terdapat deadline pada waktu tersebut"
 
-    elif(isFitur3(userMessage)[0]):
-        response = isFitur3(userMessage)[1]
+    elif(b3):
+        response = r3
 
-    elif(isFitur4(userMessage)[0]):
-        response = isFitur4(userMessage)[1]
+    elif(b4):
+        response = r4
 
-    elif(isFitur5(userMessage)[0]):
-        response = isFitur5(userMessage)[1]
+    elif(b5):
+        response = r5
 
-    elif(isFitur6(userMessage)[0]):
-        response = isFitur6(userMessage)[1]
+    elif(b6):
+        response = r6
+
     else: # fitur 8 & fitur 9
-        # typo / pesan tidak dikenali 
+        # typo / pesan tidak dikenali
+        print("masuk ke else!!!!!")
         list_suggestions = []
         message = cleanStopWord(userMessage)
         for word in message:
@@ -348,16 +370,23 @@ def get_bot_response(userMessage):
                 list_suggestions.append([word,recommended_word])
         # pesan tidak dikenali
         if (len(list_suggestions) == 0):
-            response = "Maaf, pesan tidak bisa dikenali"
+            response = pesan_operator()
         # ada typo
         else:
             # HARUSNYA UDAH BENER
             for pair in list_suggestions:
                 new_user_message = replace_all(userMessage,list_suggestions)
                 response = 'Mungkin maksudmu: "' + new_user_message + '"'
-    mytext = "<br />".join(response.split("\n"))
-    return mytext
+    if response is not None:
+        response = "<br />".join(response.split("\n"))
+    else:
+        response = pesan_operator()
+    return response
 
+def pesan_operator():
+    string = '''Maaf, pesanmu ga bisa dikenali nih
+    [TIPS]'''
+    return string
 # print("--------------------------\n")
 # userMessage = input("Masukan pesan : ")
 # print(get_bot_response(userMessage))
