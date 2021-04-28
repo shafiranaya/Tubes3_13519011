@@ -16,13 +16,12 @@ Chatbot yang dibangun adalah Deadline Reminder Assistant (asisten pengingat dead
 Chatbot dibangun dengan memanfaatkan algoritma String Matching yaitu Boyer Moore dan Regular Expression.
 
 ## Requirements
-TODO ada yang kurang gak?
 - Python3
 - Flask
 - Sqlite3
 - Sastrawi
 
-Requirements di atas dapat diinstall dengan mengetikkan pada terminal:
+Requirements di atas dapat diinstall dengan mengetikkan ini pada terminal:
 ```
 pip3 install python3
 pip3 install flask
@@ -52,7 +51,7 @@ pip3 install sastrawi
 3. Kombinasikan keyword 'kapan' dan 'deadline' untuk memperoleh tanggal deadline dari task dengan kode matkul tertentu
    
 ## Screenshots
-TODO
+![alt text](https://i.imgur.com/F4XjGaC.png)
 
 ## Features
 1. Fitur 1 - Menambahkan task baru
