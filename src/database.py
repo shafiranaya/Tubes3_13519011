@@ -1,6 +1,5 @@
 #database.py
 import sqlite3
-
 class tugas():
 
     def __init__(self, tanggal, matkul, jenis, topik):
@@ -23,7 +22,7 @@ class tugas():
             return False
 
 # create table
-file_db = "tugas.db"
+file_db = "../test/tugas.db"
 conn = sqlite3.connect(file_db)
 c = conn.cursor()
 

@@ -158,26 +158,24 @@ def isFitur3(message):
 
     courseList = find_course_id(message)
     taskList = detectTugas(message)
-
+    
     if(key and len(courseList)!=0) :
         yes = True
         if len(taskList)!=0:
-            # print("menampilkan deadline dari",taskList[0],courseList[0])
-            tempmatkul = showTugasbyMatkul(courseList[0])
-            temptugas = showTugasbyJenis(taskList[0])
-            temp = intersection(tempmatkul,temptugas)
-
+            if(taskList[0]=="tucil" or taskList[0]=="tubes"):
+                tempmatkul = showTugasbyMatkul(courseList[0])
+                temptugas = showTugasbyJenis(taskList[0])
+                temp = intersection(tempmatkul,temptugas)
+            elif(taskList[0]=="kuis" or taskList[0]=="ujian" or taskList[0]=="praktikum" or taskList[0]=="uts" or taskList[0]=="tucil" or taskList[0]=="uas"):
+                string = "Task tidak termasuk tugas"
         else:
             # print("menampilkan deadline dari tugas",courseList[0])
             temp = showTugasbyMatkul(courseList[0])
-
+    
     if(len(temp)!=0):
         for i in range(len(temp)):
             string = string + temp[i][1] + " - "+ temp[i][3] + " - "+temp[i][4] + "\n"
-    else:
-        string = "Maaf, matkul atau jenis tugas tidak ditemukan"
-            
-        
+    print(string)
     return yes, string
     # kode matkul harus huruf kapital baru kebaca
 
@@ -348,7 +346,10 @@ def get_bot_response(userMessage):
             response = "Tidak terdapat deadline pada waktu tersebut"
 
     elif(b3):
-        response = r3
+        if(r3!=""):
+            response = r3
+        else:
+            response = "Maaf, matkul atau jenis tugas tidak ditemukan"
 
     elif(b4):
         response = r4
@@ -385,7 +386,20 @@ def get_bot_response(userMessage):
 
 def pesan_operator():
     string = '''Maaf, pesanmu ga bisa dikenali nih
-    [TIPS]'''
+    [TIPS]
+    <ol style="line-height:80%">
+    <li style="line-height:150%">Untuk menambahkan task baru, pastikan pesanmu memiliki komponen sebagai berikut:
+    <ul style="line-height:80%">
+    <li>Tanggal</li>
+    <li>Kode matkul (format: XXYYYY, X:huruf kapital, Y:angka)</li>
+    <li>Jenis tugas</li>
+    <li>Topik tugas</li>
+    </ul>
+    Agar pesanmu dapat terdeteksi, pastikan topik tugas berada diantara kode matkul dan tanggal (contoh:[kode matkul] [topik] pada [tanggal])
+    </li>
+    <li style="line-height:150%">Kombinasikan keyword 'deadline' dalam pesanmu untuk melihat deadline dari task yang ada</li>
+    <li style="line-height:150%">Kombinasikan keyword 'kapan' dan 'deadline' untuk memperoleh tanggal deadline dari task dengan kode matkul tertentu</li>
+    </ol>'''
     return string
 # print("--------------------------\n")
 # userMessage = input("Masukan pesan : ")
