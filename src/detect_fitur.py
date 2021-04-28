@@ -7,12 +7,10 @@ from database import *
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 
-# TODO daftar kata penting kita tuh apa aja sih sebenernya
 # entar convert ke lowercase semua dulu
 r = re.compile(".*tubes.*|.*tucil.*|.*kuis.*|.*quiz.*|.*ujian.*|.*praktikum.*|.*uts.*|.*uas.*")
 # data kamus, yaitu semua keywords
-all_keywords = load_text("help_keywords") + load_text("done") + load_text("update_keywords") + load_text("jenis_tugas") + load_text("waktu")
-# print(all_keywords)
+all_keywords = load_text("help_keywords") + load_text("done") + load_text("update_keywords") + load_text("jenis_tugas") + load_text("waktu") + load_text("demot")
 
 # membersihkan stopwords, return dalam bentuk array
 def cleanStopWord(sentence):
@@ -45,8 +43,7 @@ def isFitur1(message): # untuk sementara udah aman kayaknya
             data = showTugasbyId(lastid)[0]
             #print("[TASK BERHASIL DICATAT]")
             string = "(ID : {}) {} - {} - {} - {}".format(data[0],data[1],data[2],data[3],data[4]) 
-            # semoga nanti string-nya tinggal di pass ke kolom chat
-            # print(string)
+
         return True, string
     else:
         return False, string

@@ -1,9 +1,6 @@
 import re
 import datetime
 
-# today_date = datetime.date.today()
-# print(today_date)
-
 # kata_penting = ["kuis","ujian","tucil","tubes","praktikum"]
 # tambahtask1 = "Tubes IF2211 String Matching pada 14 November 2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
 # tambahtask2 = "Halo bot, tolong ingetin kalau ada kuis IF3110 Bab 2 sampai 3 pada 22/04/2021" # TODO FIX. harusnya kl udah ada di database, jgn task berhasil dicatat
@@ -192,13 +189,6 @@ def find_demot_keyword(text):
         else:
             i = i + 1
     return idx
-# print(find_date(tambahtask1))
-# print(find_duration(lihat3))
-# print(convert_duration_to_days(find_duration(lihat3)))
-# print(find_duration(lihat4))
-# print("Update: " + str(find_update_keyword(update1)))
-# print("Done: " + str(find_done_keyword(done1)))
-# print("Help: " + str(find_help_keyword(help1)))
 
 # return distance (int)
 def levenshtein_distance(string1, string2):
