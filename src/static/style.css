@@ -8,33 +8,10 @@ body {
   .container {
     margin: 50px auto;
     border-radius: 25px;
-    /* background: #ddd; */
-    padding: 20px;
+    padding: 25px;
     position: relative;
     background-color: #f1f1f1;
-    /* margin: 10px 0; */
-/*     
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    position: relative; */
   }
-  
-  /* .container:after
-  {
-	content: '';
-	position: absolute;
-	left: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
-	border: 20px solid transparent;
-	border-right-color: #f1f1f1;
-	border-left: 0;
-	border-top: 0;
-	margin-top: -10px;
-	margin-left: -20px;
-  } */
   
   .darker {
     border-color: #ccc;
@@ -42,22 +19,29 @@ body {
     text-align: right;
   } 
 
-  /* .darker:after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 0;
-    height: 0;
-    border: 20px solid transparent;
-    border-left-color: #4CD964;
-    border-right: 0;
-    border-top: 0;
-    margin-top: -10px;
-    margin-right: -20px;
-  } 
-   */
+  .span {
+    font-weight: bold;
+  }
 
+  #back-to-top {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #f1f1f1; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+  }
+  
+  #back-to-top:hover {
+    background-color: #555; /* Add a dark-grey background on hover */
+  }
   /* .container img {
     float: left;
     max-width: 60px;
@@ -72,23 +56,6 @@ body {
     margin-right:0;
   } */
 
-
-  /* Speech bubble */
-  /* * {
-    margin: 0px;
-    padding: 0px;
-  }
-  
-  .box3 {
-    width: 540px;
-    margin: 50px auto;
-    border-radius: 15px;
-    background: #ddd;
-    padding: 20px;
-    position: relative;
-  }
-   */
-  
   /* speech bubble 13 */
   
   .sb13:before {
@@ -96,10 +63,10 @@ body {
     width: 0px;
     height: 0px;
     position: absolute;
-    border-left: 15px solid #4CD964;
-    border-right: 15px solid transparent;
-    border-top: 15px solid #4CD964;
-    border-bottom: 15px solid transparent;
+    border-left: 20px solid #4CD964;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #4CD964;
+    border-bottom: 20px solid transparent;
     right: -16px;
     top: 50%;
   }
@@ -112,10 +79,10 @@ body {
     width: 0px;
     height: 0px;
     position: absolute;
-    border-left: 15px solid transparent;
-    border-right: 15px solid #f1f1f1;
-    border-top: 15px solid #f1f1f1;
-    border-bottom: 15px solid transparent;
+    border-left: 20px solid transparent;
+    border-right: 20px solid #f1f1f1;
+    border-top: 20px solid #f1f1f1;
+    border-bottom: 20px solid transparent;
     left: -16px;
     top: 50%;
   }

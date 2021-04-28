@@ -23,15 +23,12 @@ error2 = "skdhfakjdfhak hfkj ahklskfa"
 error3 = "halo, apa kabar?"
 error4 = "mari kita coba"
 
-# TODO nanti cek pathnya lagi setelah folder direstructure
 def load_text(file_name):
-    # data_folder = "../test/"
-    # file_to_open = data_folder + file_name
     file_to_open = file_name + ".txt"
     f = open("../test/" + file_to_open, "r")
     array_of_words = f.read().splitlines()
     return array_of_words
-load_text("keywords")
+# load_text("keywords")
 
 # find date dengan format date yang diterima: "13 November 2001", "13/11/2001"
 def find_date(text):
@@ -44,14 +41,6 @@ def find_date(text):
         date_list.append(date2)
     return date_list
 print(find_date("aku lahir 13/11/2001 di jakarta, 12 maret 2021 blabla"))
-
-# def is_date1(string_date):
-#     return bool(re.match(r"([\d]{1,2}/[\d]{1,2}/[\d]{4})", string_date))
-# print(is_date1('13/11/2001'))
-
-# def is_date2(string_date):
-#     return bool(re.match(r"(\d{1,2} (?:januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \d{4})", string_date))
-# print(is_date2('10 april 2021'))
 
 #  fungsi buat convert "14 april 2021" ke format yang bisa dicompute sama library datetime
 def convert_string_to_date(string_date):
@@ -239,7 +228,6 @@ def word_recommendation(string, array):
             recommended_words.append([word,similarity(string,word)])
     # Karena nanti yang diambil cuma kata yang paling mirip (di kasus khusus misal ada lebih dari satu kata yang mirip)
     recommended_words = sorted(recommended_words, key=lambda x: x[1], reverse=True)
-    # recommended_words[0][0])
     if (len(recommended_words) != 0):
         recommended_word = recommended_words[0][0]
     else:

@@ -19,7 +19,7 @@
   </head>
   <body>
     <br>
-    <h1>Chattitude</h1>
+    <center><h1 style="font-weight: bold;">Chattitude</h1></center>
     <!-- <div class="box3 sb13">I'm speech bubble</div>
     <div class="box3 sb14">I'm speech bubble</div>
     <div class="container sb13">Tes container sb13</div>
@@ -28,63 +28,65 @@
     <div class="container darker sb14">Tes container darker sb14</div>
      -->
 
-    <!-- <div class="container-sm">100% wide until small breakpoint</div>
-    <div class="container-md">100% wide until medium breakpoint</div>
-    <div class="container-lg">100% wide until large breakpoint</div>
-    <div class="container-xl">100% wide until extra large breakpoint</div>
-    <div class="container-xxl">100% wide until extra extra large breakpoint</div> -->
-
-    <!-- TESTING -->
-    <!-- <div class="row">
-      <div class="col-lg-9">
-        <input class="form-control" type="text" name="question" id="question">
-      </div>
-      <div class="col-lg-3">
-        <button class="btn btn-primary btn-block" id="submit-button">Send</button>
-      </div>
-    </div> -->
-    <br>
     <div id="chatbox">
     <div class="container sb14">
-      <p><span style="font-size:30px;">&#129302;</span> Halo! Selamat datang di bot. Cara menggunakannya [TODO taro semacem info command gitu] </p>
+      <p><span style="font-size:30px;">&#129302;</span>
+        Halo! Selamat datang di Bot Chattitude!<br>
+        [TIPS]<br>
+        <ol style="line-height:80%">
+        <li style="line-height:150%">Untuk menambahkan task baru, pastikan pesanmu memiliki komponen sebagai berikut:
+        <ul style="line-height:80%">
+        <li style="line-height:150%">Tanggal</li>
+        <li style="line-height:150%">Kode matkul (format: XXYYYY, X:huruf kapital, Y:angka)</li>
+        <li style="line-height:150%">Jenis tugas</li>
+        <li style="line-height:150%">Topik tugas</li>
+        </ul>
+        Agar pesanmu dapat terdeteksi, pastikan topik tugas berada diantara kode matkul dan tanggal (contoh:[kode matkul] [topik] pada [tanggal])
+        </li>
+        <li style="line-height:150%">Kombinasikan keyword 'deadline' dalam pesanmu untuk melihat deadline dari task yang ada</li>
+        <li style="line-height:150%">Kombinasikan keyword 'kapan' dan 'deadline' untuk memperoleh tanggal deadline dari task dengan kode matkul tertentu</li>
+        </ol>
+      </p>
     </div>
-    <!-- Container User -->
-    <!-- <div class="container darker">
-      <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
-      <p class="botText">Hey! I'm fine. Thanks for asking!</p>
-    </div>
-
-    <div class="container">
-      <img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-      <p>Sweet! So, what do you wanna do today?</p>
-    </div>
-
-    <div class="container darker">
-      <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
-      <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-    </div> -->
-
+    
     </div> 
 
     <div id="userInput">
       <input id="textInput" class="form-control" type="text" name="msg" placeholder="Type your message here">
       <input id="buttonInput" class="btn btn-success form-control" type="submit" value="Send">
   </div>
-  <br>
+  <br><br>
+
+  <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button">UP</a> <!--&#57906;-->
 
     <script>
+
+$(document).ready(function(){
+	$(window).scroll(function () {
+			if ($(this).scrollTop() > 50) {
+				$('#back-to-top').fadeIn();
+			} else {
+				$('#back-to-top').fadeOut();
+			}
+		});
+		// scroll body to 0px on click
+		$('#back-to-top').click(function () {
+			$('body,html').animate({
+				scrollTop: 0
+			}, 400);
+			return false;
+		});
+});
+
     function getResponse() {
         let userText = $("#textInput").val();
-        
-        //let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+        // user html
         let userHtml = '<div class="container darker sb13"><p class="userText">' + userText + '</p></div>';
         $("#textInput").val("");
         $("#chatbox").append(userHtml);
         document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
         $.get("/get", { msg: userText }).done(function(data) {
-        // botHtml = darker
-        // var botHtml = '<p class="botText"><span>' + data + '</span></p>';
-        //  <img src="/w3images/avatar_g2.jpg" alt="Avatar" style="width:100%;">
+        // bot html
         var botHtml = '<div class="container sb14"><span style="font-size:30px;">&#129302;</span><p class="botText">' + data + '</p></div>';
 
         $("#chatbox").append(botHtml);

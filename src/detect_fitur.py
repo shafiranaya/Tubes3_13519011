@@ -292,13 +292,10 @@ def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
 
-text = "dedline tugaz IF2211 itu kpan?"
-lists = [['dedline', 'deadline'], ['tugaz', 'tugas'], ['if221', ''], ['kpan', 'kapan']]
 def replace_all(text, array):
     for dic in array:
         text = text.replace(dic[0],dic[1])
     return text
-print("TES REPLACE = " + replace_all(text,lists))
 
 def allDates(string_date):
     rawDate = find_date(string_date)
@@ -322,7 +319,7 @@ def allDates(string_date):
                 alldates.append(convert_string_to_date(rawDate[0][i]))
     return alldates
 
-# BOT RESPONSE: return string (NANTI YANG DIPAKE INI AJA)
+# BOT RESPONSE: return string
 def get_bot_response(userMessage):
     response = ""
 
@@ -341,7 +338,7 @@ def get_bot_response(userMessage):
 
     elif(b2):
         if(r2!=""):
-            response = "[DAFTAR DEADLINE]\n" + r2
+            response = "[DAFTAR DEADLINE]\n"+ r2
         else:
             response = "Tidak terdapat deadline pada waktu tersebut"
 
@@ -401,6 +398,3 @@ def pesan_operator():
     <li style="line-height:150%">Kombinasikan keyword 'kapan' dan 'deadline' untuk memperoleh tanggal deadline dari task dengan kode matkul tertentu</li>
     </ol>'''
     return string
-# print("--------------------------\n")
-# userMessage = input("Masukan pesan : ")
-# print(get_bot_response(userMessage))
