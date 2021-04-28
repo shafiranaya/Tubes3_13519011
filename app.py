@@ -9,7 +9,7 @@ app.config['SECRET_KEY'] = 'jesicashafiradelisha'
 
 @app.route('/')
 def index():
-    return render_template('example.html')
+    return render_template('index.html')
 
 @app.route("/get")
 # fungsi untuk mendapatkan response dari bot

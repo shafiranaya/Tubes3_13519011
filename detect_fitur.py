@@ -69,6 +69,10 @@ def isFitur2(message):
     
     # cari durasi
     duration = find_duration(message)
+
+    # cari kode matkul
+    matkul = find_course_id(message)
+
     # if contains 'deadline'
     if(yes):
 
@@ -89,7 +93,7 @@ def isFitur2(message):
             string = rawString(intersection(tempjenis,temptanggal))
         
         # tugas ... pada tanggal .. sampai .. (tanggalnya ada 2)
-        elif(len(taskList)!=0 and len(dateList)==2  and ("sampai" in message or "antara" in message)): # TODO
+        elif(len(taskList)!=0 and len(dateList)==2  and ((boyer_moore(message, "sampai") != -1) or (boyer_moore(message, "antara") != -1))): # TODO
             # print("Menampilkan",taskList[0],"antara",dateList[0],"sampai",dateList[1])
             tempjenis = showTugasbyJenis(taskList[0])
             temptanggal = showTugasFrom(dateList[0],dateList[1])
@@ -142,6 +146,17 @@ def isFitur2(message):
         elif(boyer_moore(message,"hari ini")!=-1):
             string = rawString(showTugasbyDate(date.today()))
 
+        # matkul ...
+        elif (len(matkul) != 0):
+            string = rawString(showTugasbyMatkul(matkul[0]))
+
+        # matkul + jenis
+        elif (len(matkul) != 0) and (len(taskList) != 0):
+            tempjenis = showTugasbyJenis(taskList[0])
+            tempmatkul = showTugasbyMatkul(matkul[0])
+            string = rawString(intersection(tempjenis,tempmatkul))
+        
+        # TODO  kalo mau sih tambah2 in kondisi lagi wkwk
         # cetak semua tugas
         else:
             string = rawString(showAllTugas())
@@ -155,10 +170,12 @@ def isFitur3(message):
     temp = []
 
     key = (boyer_moore(message,"kapan") != -1) and (boyer_moore(message,"deadline") != -1)
-
+    keytugas = (boyer_moore(message,"tubes") != -1) or (boyer_moore(message,"tucil") != -1) or (boyer_moore(message,"tugas") != -1)
     courseList = find_course_id(message)
     taskList = detectTugas(message)
-
+    # # TODO cuma bisa buat tubes, tucil, kuis
+    # if (not(keytugas)):
+    #     string = "Bukan bertipe tugas, sehingga tidak ada deadline"
     if(key and len(courseList)!=0) :
         yes = True
         if len(taskList)!=0:
@@ -166,7 +183,6 @@ def isFitur3(message):
             tempmatkul = showTugasbyMatkul(courseList[0])
             temptugas = showTugasbyJenis(taskList[0])
             temp = intersection(tempmatkul,temptugas)
-
         else:
             # print("menampilkan deadline dari tugas",courseList[0])
             temp = showTugasbyMatkul(courseList[0])
@@ -174,6 +190,8 @@ def isFitur3(message):
     if(len(temp)!=0):
         for i in range(len(temp)):
             string = string + temp[i][1] + " - "+ temp[i][3] + " - "+temp[i][4] + "\n"
+    # elif (not(keytugas)) and (len(temp)==0):
+    #     string = "Bukan bertipe tugas, sehingga tidak ada deadline"
     else:
         string = "Maaf, matkul atau jenis tugas tidak ditemukan"
             
@@ -294,13 +312,10 @@ def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
 
-text = "dedline tugaz IF2211 itu kpan?"
-lists = [['dedline', 'deadline'], ['tugaz', 'tugas'], ['if221', ''], ['kpan', 'kapan']]
 def replace_all(text, array):
     for dic in array:
         text = text.replace(dic[0],dic[1])
     return text
-print("TES REPLACE = " + replace_all(text,lists))
 
 def allDates(string_date):
     rawDate = find_date(string_date)
@@ -368,6 +383,7 @@ def get_bot_response(userMessage):
             recommended_word = word_recommendation(word,all_keywords+load_text("keywords"))
             if (recommended_word != ""):
                 list_suggestions.append([word,recommended_word])
+        # print(list_suggestions)
         # pesan tidak dikenali
         if (len(list_suggestions) == 0):
             response = pesan_operator()
@@ -387,6 +403,7 @@ def pesan_operator():
     string = '''Maaf, pesanmu ga bisa dikenali nih
     [TIPS]'''
     return string
+
 # print("--------------------------\n")
 # userMessage = input("Masukan pesan : ")
 # print(get_bot_response(userMessage))
