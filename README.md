@@ -19,6 +19,7 @@ Chatbot dibangun dengan memanfaatkan algoritma String Matching yaitu Boyer Moore
 - Flask
 - Sqlite3
 - Sastrawi
+- Browser
 
 Requirements di atas dapat diinstall dengan mengetikkan ini pada terminal:
 ```
@@ -39,6 +40,7 @@ pip3 install sastrawi
    ```
    python3 app.py
    ```
+5. Buka URL `http://127.0.0.1:5000/` pada browser
 ## How to Use
 1. Untuk menambahkan task baru, pastikan pesanmu memiliki komponen sebagai berikut:
    - Tanggal (format: DD/MM/YYYY atau dalam bahasa Indonesia)
