@@ -62,6 +62,11 @@ pip3 install sastrawi
 8. Fitur 8 - Menampilkan pesan error jika pesan tidak dikenali
 9. Fitur 9 - Memberikan rekomendasi kata apabila terdapat typo (BONUS)
 
+## Screenshots
+![Greetings](/screenshots/1.png)
+![Daftar Deadline](/screenshots/2.png)
+![Error Message](/screenshots/3.png)
+
 ## Status
 Project is finished
 
